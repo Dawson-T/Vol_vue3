@@ -1,0 +1,86 @@
+{
+  "id": "4015837",
+  "name": "青队云平台",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "14197447",
+      "name": "校园资讯-01",
+      "font_class": "xiaoyuanzixun-01",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
+      "icon_id": "1348255",
+      "name": "默认头像",
+      "font_class": "morentouxiang",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
+      "icon_id": "6204087",
+      "name": "发布-2",
+      "font_class": "fabu-",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "7057592",
+      "name": "权限",
+      "font_class": "icon-quanxian",
+      "unicode": "e686",
+      "unicode_decimal": 59014
+    },
+    {
+      "icon_id": "21967514",
+      "name": "活动报名",
+      "font_class": "icon_xinyong_xianxing_jijin-207",
+      "unicode": "e65b",
+      "unicode_decimal": 58971
+    },
+    {
+      "icon_id": "6425579",
+      "name": "反馈",
+      "font_class": "fankui",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    },
+    {
+      "icon_id": "8947208",
+      "name": "员工风采",
+      "font_class": "yuangongfengcai",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "1642651",
+      "name": "雨伞",
+      "font_class": "umbrella",
+      "unicode": "e69f",
+      "unicode_decimal": 59039
+    },
+    {
+      "icon_id": "7532866",
+      "name": "报名",
+      "font_class": "baoming",
+      "unicode": "e664",
+      "unicode_decimal": 58980
+    },
+    {
+      "icon_id": "11349131",
+      "name": "ps",
+      "font_class": "ps",
+      "unicode": "e640",
+      "unicode_decimal": 58944
+    },
+    {
+      "icon_id": "34682885",
+      "name": "项目2",
+      "font_class": "xiangmu2",
+      "unicode": "e67c",
+      "unicode_decimal": 59004
+    }
+  ]
+}
