@@ -1,11 +1,13 @@
 // 志愿活动模块仓库
 import { Names } from './store-name'
 import { defineStore } from 'pinia'
-import { requestTime } from '@/utils/util'
-import { getActivities } from '@/api/ServerAPI'
-import { setLocalData, getLocalData } from '@/utils/util'
-import { mergeObjectsByDifferentId } from '@/utils/util'
-import { getSignUpData, SignUp } from '@/api/ServerAPI'
+import { getActivities, getSignUpData, SignUp } from '@/api/ServerAPI'
+import {
+  setLocalData,
+  getLocalData,
+  mergeObjectsByDifferentId,
+  requestTime,
+} from '@/utils/util'
 // 类型约束
 import type { Activities } from './stores.d'
 const activityStore = defineStore(Names.ACTIVITY, {
@@ -38,6 +40,7 @@ const activityStore = defineStore(Names.ACTIVITY, {
     // 个人报名信息
     progressData: undefined,
     overData: undefined,
+    isSended: false,
   }),
   getters: {},
   actions: {
@@ -60,13 +63,10 @@ const activityStore = defineStore(Names.ACTIVITY, {
     // 触底刷新的回调
     async onReachBottom() {
       try {
-        const option = {
-          created_at: requestTime(
-            this.activities[this.activities.length - 1].created_at
-          ),
-          limit: 5,
-        }
-        const { data: res } = await getActivities(option)
+        let time = requestTime(
+          this.activities[this.activities.length - 1].created_at
+        )
+        const { data: res } = await getActivities(time, 5)
         if (res.length == 0) {
           return false
         } else {
@@ -81,6 +81,7 @@ const activityStore = defineStore(Names.ACTIVITY, {
     async getSignUpData() {
       const { data: res } = await getSignUpData()
       this.progressData = res
+      this.isSended = true
     },
     // 取消报名
     async cancelSignup(id: number) {

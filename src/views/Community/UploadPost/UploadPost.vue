@@ -26,21 +26,30 @@
         preview-full-image
         @delete="deleteImg($event, file)"
       />
-      <van-button type="success" @click="submitForm">发布</van-button>
+      <van-button type="primary" cltype="success" @click="submitForm"
+        >发布</van-button
+      >
     </form>
   </div>
 </template>
 
 <script setup lang="ts">
 import { uploadImgData, uploadFormDataFn } from '@/api/ServerApi'
-import { Button, showSuccessToast, showFailToast, Uploader } from 'vant'
+import { showSuccessToast, showFailToast } from 'vant'
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import AhoCorasick from 'ahocorasick'
 // 压缩图片函数
 import { compressionFile } from '@/utils/util'
 const router = useRouter()
-let active = ref(0)
+
+const msgMap = {
+  sucMsg: '上传成功',
+  errMsg: '上传失败',
+  beforeInput: '请先输入',
+  reUpload: '请勿反复提交',
+  errUnknown: '发生未知错误',
+}
 let fileList = ref([]) // 展示图片上传情况
 // 表单数据
 let uploadFormData = reactive({
@@ -58,29 +67,28 @@ const submitForm = async () => {
     // 敏感词过滤和图片处理
     const imageStr = uploadFormData.images.join('|')
     const filteredContext = sensitiveWordsFilter(uploadFormData.context)
-
     try {
       // 调用上传表单数据函数
-      const res = await uploadFormDataFn({
-        context: filteredContext,
-        images: imageStr,
-      })
+      const res = await uploadFormDataFn(
+        filteredContext,
+        imageStr ? imageStr : undefined
+      )
+      console.log(res)
 
       if (res.status === 1) {
-        showSuccessToast('发布成功')
+        showSuccessToast(msgMap.sucMsg)
         router.push('/community')
       } else {
-        showFailToast('发布失败')
+        showFailToast(res.msg)
       }
     } catch (error) {
-      console.log(error)
-      showFailToast('请求错误')
+      showFailToast(msgMap.errUnknown)
     }
   } else {
     if (!disable) {
-      showFailToast('请勿反复提交')
+      showFailToast(msgMap.reUpload)
     } else {
-      showFailToast('请先输入')
+      showFailToast(msgMap.beforeInput)
     }
   }
 }
@@ -95,10 +103,10 @@ const afterRead = async (file) => {
     const res = await uploadImgData(base64)
     uploadFormData.images.push(res.image)
     file.status = 'true'
-    file.message = '上传成功'
+    file.message = msgMap.sucMsg
   } catch (error) {
     file.status = 'false'
-    file.message = '上传失败'
+    file.message = msgMap.errMsg
   } finally {
     file.status = 'done'
     file.message = ''
@@ -106,6 +114,7 @@ const afterRead = async (file) => {
 }
 // 过滤敏感词 返回过滤后的字符
 const sensitiveWordsFilter = (str) => {
+  // 需要敏感词汇集，这里仅做测试
   const sensitiveWord: string[] = ['sb', '傻逼', '笨蛋', 'nt', '草']
   let ac = new AhoCorasick(sensitiveWord)
 

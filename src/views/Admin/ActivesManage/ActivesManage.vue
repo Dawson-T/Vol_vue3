@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="img"><img src="@/assets/images/志愿活动.webp" alt="" /></div>
+    <div class="img"><img src="@/assets/images/志愿活动.webp" /></div>
     <van-button @click="goPublish" round block type="info">发布活动</van-button>
     <van-button @click="goDelete" round block type="info">删除活动</van-button>
   </div>

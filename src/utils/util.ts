@@ -65,7 +65,7 @@ export const compressionFile = async (file, quality = 0.2) => {
   return newBase64
 }
 
-const getImageTypeFromBase64 = (base64Data) => {
+const getImageTypeFromBase64 = (base64Data: string) => {
   // 检查base64数据是否以"data:"开头
   if (base64Data.startsWith('data:')) {
     // 获取"data:"之后的部分，直到分号";"之前的内容
@@ -87,7 +87,6 @@ export const transformMarkdown = (text: string) => {
   const md = new MarkdownIt()
   return md.render(text)
 }
-
 
 // 获取本地缓存 key为缓存的名称
 export const getLocalData = (key: string) => {
@@ -118,7 +117,6 @@ export const removeLocalData = (key: string) => {
     return false
   }
 }
-
 
 import dayjs from 'dayjs'
 const now = dayjs()
@@ -158,12 +156,11 @@ export const formatChatTime = (timestamp: string) => {
 
 // 身份验证
 export const isLogin = (): boolean => {
-  const userinfo = localStorage.getItem('userinfo')
-  const tokenExpiresAt = localStorage.getItem('token_expires_at')
+  const userinfo = getLocalData('userinfo')
+  const tokenExpiresAt = getLocalData('token_expires_at')
 
-  if (userinfo && tokenExpiresAt) {
-    const expiresAt = JSON.parse(tokenExpiresAt)
-    if (Date.now() < expiresAt) {
+  if (userinfo?.sk && tokenExpiresAt) {
+    if (Date.now() < tokenExpiresAt) {
       return true // 未过期
     }
   }

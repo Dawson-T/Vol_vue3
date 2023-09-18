@@ -43,7 +43,6 @@ const adminUserInfoStore = defineStore(Names.ADMINUSERINFO, {
     async getUserData(currentId: any) {
       const AdminListData = getLocalData('AdminList')
       const UserListData = getLocalData('UserList')
-      // @ts-ignore
       // 先从管理员中找
       this.user = AdminListData.find(
         // @ts-ignore
@@ -62,34 +61,27 @@ const adminUserInfoStore = defineStore(Names.ADMINUSERINFO, {
      * @param id 当前用户id
      */
     async setPermission({ value: currentPermission }: any, id: any) {
-      let permissionType
+      const roleToPermissionType: { [key: string]: number } = {
+        超级管理员: 1,
+        管理员: 2,
+        普通用户: 0,
+      }
+
+      let permissionType = roleToPermissionType[currentPermission]
+
       let permissionPromise
-      if (currentPermission == '超级管理员') {
-        // 超级管理员
-        permissionType = 1
+      if (permissionType === 1 || permissionType === 2) {
+        console.log(permissionType)
+
+        // 超级管理员或管理员
         permissionPromise = await AuthAdminPermission(id, permissionType)
-        if (permissionPromise.status == 1) {
-          return 1
-        } else {
-          return 0
-        }
-      } else if (currentPermission == '管理员') {
-        // 管理员
-        permissionType = 2
-        permissionPromise = await AuthAdminPermission(id, permissionType)
-        if (permissionPromise.status == 1) {
-          return 1
-        } else {
-          return 0
-        }
-      } else {
-        // 普通用户
+      } else if (permissionType === 0) {
         permissionPromise = await CancelPermission(id)
-        if (permissionPromise.status == 1) {
-          return 1
-        } else {
-          return 0
-        }
+      }
+      if (permissionPromise && permissionPromise.status === 1) {
+        return 1
+      } else {
+        return 0
       }
     },
   },

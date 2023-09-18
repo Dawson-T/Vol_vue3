@@ -42,7 +42,6 @@
 </template>
 
 <script setup lang="ts">
-import { Grid, GridItem, Dialog } from 'vant'
 import { ref, reactive } from 'vue'
 </script>
 

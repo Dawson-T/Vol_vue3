@@ -19,14 +19,19 @@ http.interceptors.request.use((config: CustomRequestConfig) => {
       if (userinfo) {
         config.headers['Authorization'] = `Bearer ${userinfo.sk}`
       }
-    } else {
+    } else if (getLocalData('token_expires_at')) {
       removeLocalData('userinfo')
       removeLocalData('token_expires_at')
-      showFailToast('当前未登录或身份认证已过期，请重新登录')
+      showFailToast('登录已过期，请重新登录')
+    } else {
+      showFailToast('请先登录')
     }
   }
   // 设置请求的headers信息
   config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+  // 请求拦截信息
+  // console.log(config);
+
   return config
 })
 //响应拦截器

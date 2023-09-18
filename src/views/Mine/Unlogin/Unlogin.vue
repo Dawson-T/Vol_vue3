@@ -11,21 +11,9 @@
       </div>
     </div>
     <section>
-      <ul>
-        <li>
-          <a href="#"><van-icon name="manager-o" />志愿者认证</a>
-        </li>
-        <li>
-          <a href="#"><van-icon name="records" />志愿者报名</a>
-        </li>
-        <li>
-          <a href="#"><van-icon name="guide-o" />使用指南</a>
-        </li>
-        <li>
-          <a href="#"><van-icon name="search" />关于青队</a>
-        </li>
-        <li>
-          <a href="#"><van-icon name="setting-o" />设置</a>
+      <ul @click="toastFn">
+        <li v-for="item in menuItems">
+          <div href="#"><van-icon :name="item.icon" />{{ item.text }}</div>
         </li>
       </ul>
     </section>
@@ -34,6 +22,15 @@
 
 <script setup lang="ts">
 import { oauthUrl } from '@/api/user'
+import { showToast } from 'vant'
+
+const menuItems = [
+  { icon: 'manager-o', text: '志愿者认证' },
+  { icon: 'records', text: '志愿者报名' },
+  { icon: 'guide-o', text: '使用指南' },
+  { icon: 'search', text: '关于青队' },
+  { icon: 'setting-o', text: '设置' },
+]
 const login = async () => {
   oauthUrl().then((res: any) => {
     if (res.status) {
@@ -42,6 +39,10 @@ const login = async () => {
       window.location.href = url
     }
   })
+}
+
+const toastFn = () => {
+  showToast('登录之后可以体验更多功能')
 }
 </script>
 
@@ -81,7 +82,7 @@ section ul {
 section li {
   margin-bottom: 10px;
 }
-section a {
+section div {
   display: block;
   padding: 10px;
   color: #333;
@@ -90,11 +91,11 @@ section a {
   background-color: #f6f6f6;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
-section a .van-icon {
+section div .van-icon {
   margin-right: 3px;
 }
 
-section a:hover {
+section div:hover {
   background-color: #e6e6e6;
 }
 </style>

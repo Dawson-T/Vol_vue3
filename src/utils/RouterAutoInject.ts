@@ -13,9 +13,13 @@
 //     component: viewModule,
 //   }
 // })
+
+/**
+ * 路由注入
+ * @returns views文件下全部页面的路由
+ */
 export const generateRoutes = async () => {
   const routes: any[] = []
-
   // 第一层
   const modulesFiles1: any = import.meta.glob('../views/*/*.vue')
   const modulesName1 = Object.keys(modulesFiles1).filter((item: any) => true)

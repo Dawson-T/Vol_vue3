@@ -8,6 +8,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from '@/stores'
+import { getLocalData } from '@/utils/util'
 const router = useRouter()
 const userStore = useStore().user
 let countdown = ref(3)
@@ -16,7 +17,7 @@ onMounted(() => {
   // 开始倒计时
   let interval = setInterval(() => {
     countdown.value--
-    if (countdown.value === 0 || localStorage.getItem('userinfo')) {
+    if (countdown.value === 0 || getLocalData('userinfo')) {
       clearInterval(interval) // 倒计时结束时清除定时器
       router.replace('/my')
     }

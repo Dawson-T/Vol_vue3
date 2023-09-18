@@ -1,5 +1,4 @@
 import http from '@/utils/request'
-
 /**
  * gpt回答
  * @param {*} key key
@@ -103,6 +102,16 @@ export const getCommunityData = (time, limit) => {
   })
 }
 
+//
+export const getAuthCommunityData = (time, limit) => {
+  console.log(time, limit);
+  return http({
+    url: `/auth/post/getposts?created_at=${time}&limit=${limit}`,
+    method: 'GET',
+    needToken: true,
+  })
+}
+
 // 获取个人帖子
 export const getPersonData = (time, limit) => {
   return http({
@@ -130,10 +139,10 @@ export const postIsLike = (id) => {
   })
 }
 // 发表评论
-export const POstCommentsData = (option) => {
+export const PostCommentsData = (option) => {
   return http({
     method: 'POST',
-    url: 'auth/post/cmt',
+    url: '/auth/post/cmt',
     data: option,
     needToken: true,
   })
@@ -143,7 +152,7 @@ export const POstCommentsData = (option) => {
 export const GetCommentsData = (id) => {
   return http({
     method: 'POST',
-    url: 'auth/post/getcmts',
+    url: '/auth/post/getcmts',
     data: { post_id: id },
     needToken: true,
   })
@@ -197,11 +206,15 @@ export const uploadImgData = (base64) => {
 }
 
 // 上传表单
-export const uploadFormDataFn = (option) => {
+export const uploadFormDataFn = (context, images) => {
+  const data = {
+    context,
+    ...(images && { images })  // 存在图片就传入服务器
+  };
   return http({
     method: 'POST',
     url: '/auth/post/publish',
-    data: option,
+    data: data,
     needToken: true,
   })
 }
@@ -210,7 +223,7 @@ export const uploadFormDataFn = (option) => {
 export const updateFormData = (data) => {
   return http({
     method: 'POST',
-    url: 'auth/post/update',
+    url: '/auth/post/update',
     data: data,
     needToken: true,
   })

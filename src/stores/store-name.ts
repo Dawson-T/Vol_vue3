@@ -4,4 +4,6 @@ export const enum Names {
   COMMUNITY = 'community',
   ACTIVITY = 'activity',
   ADMINUSERINFO = 'adminUserInfo',
+  UMBRELLA = 'umbrella',
+  NEWS = 'news',
 }

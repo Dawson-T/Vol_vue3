@@ -24,12 +24,12 @@
             </div>
             <div class="name">{{ item.username }}</div>
             <div class="time">
-              {{ formatChatTime(item.updated_at) }}
+              {{ formatChatTime(item.created_at) }}
             </div>
           </div>
           <div class="mid-container">
             <div class="card-text">{{ item.context }}</div>
-            <div v-if="item.images !== ''">
+            <div v-if="item.images !== null">
               <van-image
                 v-for="(imgUrl, imgIndex) in item.images.split('|')"
                 :key="imgIndex"
@@ -53,6 +53,7 @@
                 <van-icon
                   name="like-o"
                   size="25px"
+                  :class="{ liked: item.islike == 1 }"
                   @click="clickLikes(item.id, $event)"
                 />
                 <span>{{ item.likes }}</span>
@@ -78,25 +79,21 @@
 </template>
 
 <script setup lang="ts">
+import { Image as VanImage, showImagePreview } from 'vant'
 import {
-  List,
-  Image as VanImage,
-  PullRefresh,
-  ShareSheet,
-  showImagePreview,
-} from 'vant'
-import { postLiked, postIsLike, getCommunityData } from '@/api/ServerApi'
-import { requestTime, formatChatTime } from '@/utils/util'
-import dayjs from 'dayjs'
+  postLiked,
+  postIsLike,
+  getCommunityData,
+  getAuthCommunityData,
+} from '@/api/ServerApi'
 import {
-  ref,
-  reactive,
-  onMounted,
-  toRef,
-  toRaw,
-  getCurrentInstance,
-  nextTick,
-} from 'vue'
+  requestTime,
+  formatChatTime,
+  getLocalData,
+  setLocalData,
+  isLogin,
+} from '@/utils/util'
+import { ref, reactive, onMounted, toRaw, getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const instance = getCurrentInstance()
@@ -104,41 +101,51 @@ const isLoading = ref(false)
 const loading = ref(false)
 const finished = ref(false)
 const data = reactive<any>([]) // 装返回的全部数据
-const userInfo = reactive({
-  avatar: '', // 头像
-})
-const isFirstLoad = ref(true) // 是否是第一次进入页面
-const imgs = ref('') // 用于渲染的Img
-const liked = ref(false) // 是否点赞
 const throttle = ref(false) // 下拉刷新的节流阀
-const isCurrent = ref('') // 判断是否是当前id
-const commentsData = reactive([]) // 全部评论数据
-const now = dayjs()
+
 onMounted(async () => {
-  getLocalData()
+  getLocalCommunityData()
 })
 
-// 获取本地帖子数据(无数据向服务器获取)
-const getLocalData = async () => {
-  const communityData = localStorage.getItem('communityData')
-  if (communityData) {
-    data.value = JSON.parse(communityData)
+// 登录和未登录的接口不同
+const getAuthorizedData = async (time: any, limit: number) => {
+  const getCommunityDataWithAuth = async () => {
+    const authData = await getAuthCommunityData(requestTime(time), limit)
+    console.log(authData)
+
+    return authData.data
+  }
+
+  const getCommunityDataWithoutAuth = async () => {
+    const communityData = await getCommunityData(requestTime(time), limit)
+    return communityData.data
+  }
+  if (isLogin()) {
+    return await getCommunityDataWithAuth()
   } else {
-    const { data: result } = await getCommunityData(requestTime(null), 10)
-    data.value = result
-    localStorage.setItem('communityData', JSON.stringify(toRaw(data).value))
+    return await getCommunityDataWithoutAuth()
+  }
+}
+
+// 获取本地帖子数据(无数据向服务器获取)
+const getLocalCommunityData = async () => {
+  const communityData = getLocalData('communityData')
+  if (communityData) {
+    data.value = communityData
+  } else {
+    data.value = await getAuthorizedData(requestTime(null), 10)
+
+    setLocalData('communityData', toRaw(data).value)
   }
 }
 
 // 合并不同ID的数组对象(注意使用Set的问题)
 const mergeObjectsByDifferentId = (arr1: any, arr2: any) => {
   let array = [...arr2, ...arr1]
-
   const result = array.filter((item, index) => {
     const i = array.findIndex((obj) => obj.id === item.id)
     return i === index
   })
-
   return result
 }
 
@@ -149,7 +156,8 @@ const onRefresh = async () => {
     throttle.value = true
     // 修复下拉获取不到数据问题：
     // 请在页面中获取当前时间再传入dayjs，直接在dayjs中获取的时间是进入页面的时间，下拉刷新请求的时间还是在发布之前的时间
-    const { data: result } = await getCommunityData(requestTime(Date()), 10)
+    const time = requestTime(Date())
+    const result = await getAuthorizedData(time, 10)
     // 响应式数组还原后再传入
     const mergeArray = mergeObjectsByDifferentId(toRaw(data).value, result)
 
@@ -162,18 +170,22 @@ const onRefresh = async () => {
 }
 // 触底回调
 const onLoad = async () => {
-  loading.value = true
-  // 获取每条消息的最早时间
-  const lastTime = data.value[data.value.length - 1].created_at
-  const time = requestTime(lastTime)
-  const { data: result } = await getCommunityData(time, 10)
-  // 追加过滤相同id的数组对象
-  data.value = mergeObjectsByDifferentId(result, toRaw(data).value)
-  localStorage.setItem('communityData', JSON.stringify(toRaw(data).value))
-  loading.value = false
-  if (result.length === 0) {
-    // 数据为空 设置已完成
-    finished.value = true
+  if (!throttle.value) {
+    loading.value = true
+    // 获取每条消息的最早时间
+    const lastTime = data.value[data.value.length - 1].created_at
+    const time = requestTime(lastTime)
+    const result = await getAuthorizedData(time, 10)
+    // 追加过滤相同id的数组对象
+    data.value = mergeObjectsByDifferentId(result, toRaw(data).value)
+    setLocalData('communityData', toRaw(data).value)
+    loading.value = false
+    if (result.length === 0) {
+      // 数据为空 设置已完成
+      finished.value = true
+    }
+    // 关闭节流阀
+    throttle.value = false
   }
 }
 // 图片缩放比例（4与2相比将ImagePreview更改成showImagePreview，用法基本不变）
@@ -187,8 +199,6 @@ const preview = (arr: string[], position: number) => {
 }
 
 const clickLikes = (id: number, e: any) => {
-  // showToast('点赞功能正在维护')
-
   if (e.srcElement.classList.contains('liked')) {
     e.srcElement.classList.remove('liked')
     data.value.find((item: any) => {

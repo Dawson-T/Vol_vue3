@@ -67,7 +67,7 @@
           <div class="time">
             {{ requestTime(item.updated_at) }}
           </div>
-          <button @click="replay(item.id)" class="replay">回复</button>
+          <van-button @click="replay(item.id)" class="replay">回复</van-button>
         </div>
         <div class="comment-context">{{ item.context }}</div>
       </div>
@@ -94,12 +94,7 @@
 
 <script setup lang="ts">
 import {
-  List,
   Image as VanImage,
-  PullRefresh,
-  ShareSheet,
-  ImagePreview,
-  Sticky,
   showToast,
   showSuccessToast,
   showFailToast,
@@ -108,27 +103,26 @@ import {
   postLiked,
   postIsLike,
   GetCommentsData,
-  POstCommentsData,
+  PostCommentsData,
 } from '@/api/ServerApi'
-import { ref, reactive, onMounted, nextTick } from 'vue'
-import { requestTime } from '@/utils/util'
+import { ref, onMounted, nextTick } from 'vue'
+import { requestTime, getLocalData } from '@/utils/util'
 import { useRoute } from 'vue-router'
 const route = useRoute()
-const id = ref(0) // 该页面id
-let data = ref([]) // 该页面全部评论数据
-let liked = ref(false) // 判断是否点赞
+const id = ref(0) 
+let data = ref([])
 let comments = ref([])
-let context = ref('') // 输入框内容
+let context = ref('')
 const input = ref<HTMLInputElement | null>(null)
 onMounted(() => {
   // 使用类型转换和处理可能为null的情况
   id.value = Number(route.query.id || 0)
-  setOnlyData()
+  setCurrentData()
   GetComments()
 })
 // 设置当前页的内容
-const setOnlyData = () => {
-  const array = JSON.parse(localStorage.getItem('communityData') as string)
+const setCurrentData = () => {
+  const array = getLocalData('communityData')
   array.forEach((item) => {
     if (item.id == id.value) {
       data.value.push(item)
@@ -145,7 +139,7 @@ const GetComments = () => {
   })
 }
 // 聚焦键盘
-const replay = (id) => {
+const replay = (id: number) => {
   // 将光标置于输入框中
   nextTick(() => {
     input.value?.focus()
@@ -160,7 +154,7 @@ const commit = () => {
     context: context.value,
   }
   context.value = ''
-  POstCommentsData(option).then((res) => {
+  PostCommentsData(option).then((res) => {
     if (res.status == 1) {
       showSuccessToast(res.msg)
       GetComments()

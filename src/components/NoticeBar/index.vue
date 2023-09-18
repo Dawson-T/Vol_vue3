@@ -9,7 +9,6 @@
 </template>
 
 <script setup lang='ts'>
-import { NoticeBar } from 'vant'
 defineProps(['text'])
 </script>
 

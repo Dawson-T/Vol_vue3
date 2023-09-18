@@ -21,7 +21,7 @@
       <div class="mid-container">
         <div class="card-text">{{ item.context }}</div>
         <!-- 单图 -->
-        <div class="img-container" v-if="item.images !== ''">
+        <div class="img-container" v-if="item.images !== null">
           <van-image
             v-for="(imgUrl, imgIndex) in item.images.split('|')"
             :key="imgIndex"

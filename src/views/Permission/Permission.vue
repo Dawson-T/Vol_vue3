@@ -54,6 +54,21 @@ const columns = reactive([
   { text: '超级管理员', value: '超级管理员' },
   { text: '管理员', value: '管理员' },
 ])
+
+const msg = {
+  errMsg: '申请失败',
+  sucMsg: '申请成功',
+}
+
+interface PermissionMapping {
+  [key: string]: number
+}
+
+const permissionMapping: PermissionMapping = {
+  超级管理员: 1,
+  管理员: 2,
+}
+
 const onCancel = () => {
   showPicker.value = false
 }
@@ -63,26 +78,21 @@ const onConfirm = ({ selectedOptions }: any) => {
 }
 
 const onSubmit = async () => {
-  if (valueData.value == '超级管理员') {
-    let { status: res } = await ApplyPermission(1, message.value)
+  const selectedPermission = permissionMapping[valueData.value]
+  if (selectedPermission !== undefined) {
+    let { status: res } = await ApplyPermission(
+      selectedPermission,
+      message.value
+    )
     if (res == 1) {
-      showSuccessToast('申请成功')
+      showSuccessToast(msg.sucMsg)
       message.value = ''
       valueData.value = ''
     } else {
-      showFailToast('申请失败！')
-    }
-  } else if (valueData.value == '管理员') {
-    let { status: res } = await ApplyPermission(2, message.value)
-    if (res == 1) {
-      showSuccessToast('申请成功')
-      message.value = ''
-      valueData.value = ''
-    } else {
-      showFailToast('申请失败！')
+      showFailToast(msg.errMsg)
     }
   } else {
-    showFailToast('申请失败！')
+    showFailToast(msg.errMsg)
   }
 }
 </script>

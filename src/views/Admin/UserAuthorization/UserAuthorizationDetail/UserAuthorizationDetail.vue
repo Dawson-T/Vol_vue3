@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { getPermissionList, dealApplyPermission } from '@/api/admin'
-import { showSuccessToast, showFailToast } from 'vant'
+import { showSuccessToast, showFailToast, Toast } from 'vant'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 let list = ref([])
@@ -75,10 +75,24 @@ const getList = () => {
     })
   })
 }
-const Agree = async (user_id, agree) => {
+const Agree = async (user_id: number, agree: number) => {
   const res = await dealApplyPermission(user_id, agree)
+  if (res.status == 1) {
+    showSuccessToast(res.msg)
+  } else {
+    showFailToast(res.msg)
+  }
+  getList()
 }
-const Refuse = (user_id, refuse) => {}
+const Refuse = async (user_id: number, refuse: number) => {
+  const res = await dealApplyPermission(user_id, refuse)
+  if (res.status == 0) {
+    showSuccessToast(res.msg)
+  } else {
+    showFailToast(res.msg)
+  }
+  getList()
+}
 </script>
 
 <style scoped lang="scss">

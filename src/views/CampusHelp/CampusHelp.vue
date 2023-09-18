@@ -39,15 +39,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted} from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import {useStore} from '@/stores'
+import { useStore } from '@/stores'
 const { user } = useStore()
 const { userInfo } = storeToRefs(user)
 
-onMounted(() => {
-})
+onMounted(() => {})
 const router = useRouter()
 const goSoftware = () => {
   router.push({ path: '/software' })

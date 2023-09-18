@@ -15,18 +15,15 @@
     <!-- 卡片 开始 -->
     <!-- 发布时间 -->
     <div v-for="item in imgList">
-      <van-divider>发布时间：2023-04-02</van-divider>
-      <div class="card">
-        <img :src="item" class="card-img" v-lazy="item" />
+      <van-divider>发布时间：{{ item.time }}</van-divider>
+      <div class="card" @click="goDetailPage">
+        <img :src="item.img" class="card-img" v-lazy="item.img" />
         <div class="card-body">
-          <h2 class="card-title">
-            人工智能学院“小红帽”常青藤青年志愿者服务队123456
-          </h2>
+          <h2 class="card-title">{{ item.text }}</h2>
         </div>
       </div>
     </div>
     <!-- 卡片结束 -->
-
     <!-- 底线开始 -->
     <van-divider>没有更多了</van-divider>
     <!-- 底线结束 -->
@@ -37,13 +34,29 @@
 import Swipe from '@/components/Swipe/index.vue'
 import NoticeBar from '@/components/NoticeBar/index.vue'
 import Gird from '@/components/Grid/index.vue'
-
+import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+const router = useRouter()
 const imgList = ref([
-  'https://picsum.photos/500/300?random=1',
-  'https://picsum.photos/500/300?random=2',
-  'https://picsum.photos/500/300?random=3',
+  {
+    time: '2023-04-02',
+    text: '人工智能学院“小红帽”常青藤青年志愿者服务队123456',
+    img: 'https://picsum.photos/500/300?random=1',
+  },
+  {
+    time: '2023-04-02',
+    text: '人工智能学院“小红帽”常青藤青年志愿者服务队123456',
+    img: 'https://picsum.photos/500/300?random=2',
+  },
+  {
+    time: '2023-04-02',
+    text: '人工智能学院“小红帽”常青藤青年志愿者服务队123456',
+    img: 'https://picsum.photos/500/300?random=3',
+  },
 ])
+const goDetailPage = () => {
+  router.push({ name: 'Article', query: { id: 1 } })
+}
 </script>
 
 <style scoped>
@@ -68,16 +81,13 @@ const imgList = ref([
   width: 100%;
   display: block;
   object-fit: cover;
-  height: 150px;
+  height: 22vh;
 }
 .card-body {
   padding: 10px;
 }
 .card-title {
-  width: 330px;
   font-size: 14px;
-  font-family: KaiTi, STKaiti, 'Microsoft YaHei', sans-serif;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

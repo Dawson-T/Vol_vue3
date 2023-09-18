@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, toRaw, nextTick } from 'vue'
+import { ref, onMounted } from 'vue'
 import { isSignUp, SignUp } from '@/api/ServerApi'
 import { useRoute } from 'vue-router'
 import { getLocalData } from '@/utils/util'
@@ -85,7 +85,6 @@ const CurrentIsSignUp = async () => {
     isDisable.value = true
   }
 }
-const isLogin = () => {}
 onMounted(() => {
   getData()
   CurrentIsSignUp()

@@ -1,159 +1,50 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { showLoadingToast, closeToast } from 'vant'
 import { nextTick } from 'vue'
-import { generateRoutes } from '../utils/RouterAutoInject'
-generateRoutes()
+import indexRoutes from './routes'
+import permissionRoutes from './permission'
+import Home from '../views/Home/Home.vue'
+import Community from '../views/Community/Community.vue'
+import ChatGPT from '../views/ChatGPT/chatGPT.vue'
+import My from '../views/Mine/Mine.vue'
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
+    // 以下四个页面建议不要懒加载，弱网环境下体验会很差
     {
       path: '/',
       redirect: '/home',
     },
     {
       path: '/home',
-      name: 'home',
-      component: () => import('../views/Home/Home.vue'),
+      name: 'Home',
+      component: Home,
     },
+
     {
       path: '/my',
-      name: 'my',
-      component: () => import('../views/Mine/Mine.vue'),
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('../views/Mine/Waiting/Waiting.vue'),
+      name: 'My',
+      component: My,
     },
     {
       path: '/chatgpt',
-      name: 'ChatGpt',
-      component: () => import('@/views/ChatGPT/chatGPT1.vue'),
+      name: 'ChatGPT',
+      component: ChatGPT,
     },
     {
       path: '/community',
       name: 'Community',
-      component: () => import('@/views/Community/Community.vue'),
+      component: Community,
     },
-    // 上传帖子
-    {
-      path: '/uploadpost',
-      name: 'UploadPost',
-      component: () => import('@/views/Community/UploadPost/UploadPost.vue'),
-      meta: { requireAuth: true },
-    },
-    // 我的帖子
-    {
-      path: '/mypost',
-      name: 'Mypost',
-      component: () => import('@/views/Community/MyPost/MyPost.vue'),
-    },
-
-    {
-      path: '/comment',
-      name: 'Comment',
-      component: () => import('@/views/Community/Comment/Comment.vue'),
-    },
-    {
-      path: '/campushelp',
-      name: 'CampusHelp',
-      component: () => import('@/views/CampusHelp/CampusHelp.vue'),
-    },
-    // 活动板块
-    {
-      path: '/activity',
-      name: 'Activity',
-      component: () => import('@/views/Activity/Activity.vue'),
-    },
-    // 我的活动报名
-    {
-      path: '/myactivity',
-      name: 'MyActivity',
-      component: () => import('@/views/Activity/MyActivity/MyActivity.vue'),
-    },
-    {
-      path: '/activity/detail/',
-      name: 'Detail',
-      component: () => import('@/views/Activity/Detail/Detail.vue'),
-    },
-    // 后台管理
-    {
-      path: '/admin',
-      name: 'Admin',
-      component: () => import('@/views/Admin/Admin.vue'),
-    },
-    // 用户信息
-    {
-      path: '/userinfo',
-      name: 'Userinfo',
-      component: () => import('@/views/Admin/UserInfo/UserInfo.vue'),
-    },
-    // 后台权限管理
-    {
-      path: '/userinfo_permission',
-      name: 'userinfo_permission',
-      component: () =>
-        import(
-          '@/views/Admin/UserInfo/UserinfoPermission/UserinfoPermission.vue'
-        ),
-    },
-
-    {
-      path: '/activiesmanage',
-      name: 'ActivesManage',
-      component: () => import('@/views/Admin/ActivesManage/ActivesManage.vue'),
-    },
-    // 活动删除
-    {
-      path: '/deleteactiviesDetail',
-      name: 'DeleteActivesDetail',
-      component: () =>
-        import('@/views/Admin/ActivesManage/DeleteActives/DeleteActives.vue'),
-    },
-    // 活动发布页
-    {
-      path: '/publishactivesDetail',
-      name: 'PublishActivesDetail',
-      component: () =>
-        import(
-          '@/views/Admin/ActivesManage/PublishActivesDetail/PublishActivesDetail.vue'
-        ),
-    },
-    // 反馈
-    {
-      path: '/feedback',
-      name: 'Feedback',
-      component: () => import('@/views/FeedBack/FeedBack.vue'),
-    },
-    {
-      path: '/feedbackinfo',
-      name: 'FeedBackInfo',
-      component: () => import('@/views/Admin/FeedBackInfo/FeedBackInfo.vue'),
-    },
-    {
-      path: '/permission',
-      name: 'Permission',
-      component: () => import('@/views/Permission/Permission.vue'),
-    },
-    {
-      path: '/userauthorization',
-      name: 'UserAuthorization',
-      component: () =>
-        import('@/views/Admin/UserAuthorization/UserAuthorization.vue'),
-    },
-    {
-      path: '/userauthorizationdetail',
-      name: 'UserAuthorizationDetail',
-      component: () =>
-        import(
-          '@/views/Admin/UserAuthorization/UserAuthorizationDetail/UserAuthorizationDetail.vue'
-        ),
-    },
+    // 基础功能页面
+    ...indexRoutes,
+    // 管理功能页面
+    ...permissionRoutes,
   ],
 })
 
 router.beforeEach((to, from, next) => {
-  // 在这里显示加载中的效果，比如设置一个全局的加载中状态
+  // 在这里显示加载中的效果
   if (to.fullPath === '/my') {
     const toast = showLoadingToast({
       message: '加载中...',
@@ -167,7 +58,7 @@ router.beforeEach((to, from, next) => {
     })
     // window.scrollTo(0, 0);
   } else {
-    // window.scrollTo(0, 0);
+    window.scrollTo(0, 0)
     next()
   }
 })

@@ -4,7 +4,6 @@
       <van-dropdown-item v-model="value1" :options="option1" />
     </van-dropdown-menu>
     <!-- 全部用户 -->
-
     <div v-if="value1 === 0">
       <InfoCard
         v-for="item in list"

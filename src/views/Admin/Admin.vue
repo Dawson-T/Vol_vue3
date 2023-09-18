@@ -11,41 +11,11 @@
       </div>
       <van-grid :column-num="3" icon-size="40px" clickable>
         <van-grid-item
+          v-for="item in list"
           icon-prefix="iconfont"
-          icon=" icon-icon-quanxian"
-          to="/userauthorization"
-          text="权限审批"
-        />
-        <van-grid-item
-          icon-prefix="iconfont"
-          icon=" icon-icon_xinyong_xianxing_jijin-207"
-          to="/activitieslist"
-          text="活动报名"
-        />
-        <van-grid-item
-          icon-prefix="iconfont"
-          to="/feedbackinfo"
-          icon=" icon-fankui"
-          text="意见反馈"
-        />
-        <van-grid-item
-          icon-prefix="iconfont"
-          to="/borrowingInfopage"
-          icon=" icon-umbrella"
-          text="爱心雨伞"
-        />
-        <van-grid-item
-          icon-prefix="iconfont"
-          to="/userinfo"
-          icon=" icon-xiaoyuanzixun-01"
-          text="用户信息"
-        />
-
-        <van-grid-item
-          icon-prefix="iconfont"
-          to="/activiesmanage"
-          icon=" icon-fabu-"
-          text="活动管理"
+          :icon="item.icon"
+          :to="item.path"
+          :text="item.text"
         />
       </van-grid>
     </div>
@@ -53,7 +23,20 @@
 </template>
 
 <script setup lang="ts">
-import { Grid, GridItem } from 'vant'
+let list = [
+  { icon: ' icon-icon-quanxian', path: '/userauthorization', text: '权限审批' },
+
+  {
+    icon: ' icon-icon_xinyong_xianxing_jijin-207',
+    path: '/activitieslist',
+    text: '活动报名',
+  },
+
+  { icon: ' icon-fankui', path: '/feedbackinfo', text: '意见反馈' },
+  { icon: ' icon-umbrella', path: '/borrowingInfopage', text: '爱心雨伞' },
+  { icon: ' icon-xiaoyuanzixun-01', path: '/userinfo', text: '用户信息' },
+  { icon: ' icon-fabu-', path: '/activiesmanage', text: '活动管理' },
+]
 </script>
 
 <style scoped lang="scss">

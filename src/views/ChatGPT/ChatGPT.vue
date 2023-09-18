@@ -9,14 +9,16 @@
     <!-- middle -->
     <div class="chat_middle" id="chat_middle_item" ref="myElement">
       <!-- 左边 -->
-      <div v-for="(item, index) in Message" :key="index">
-        <div class="chat_left clearfix" v-if="item.isbot">
+      <div v-for="item in dialogData" :key="item.id">
+        <van-divider >{{
+          formatChatTime(item.time)
+        }}</van-divider>
+        <div class="chat_left clearfix" v-if="item.type === 1">
           <div class="chat_left_item_1">
             <img src="@/assets/images/gpt.webp" />
           </div>
           <div class="chat_left_item_2">
-            <div class="chat_time">{{ item.time }}</div>
-            <div class="chat_left_content" v-html="item.msg"></div>
+            <div class="chat_left_content" v-html="item.text"></div>
           </div>
         </div>
         <!--右边 -->
@@ -25,9 +27,8 @@
             <img class="avatar" :src="avatar" alt="avatar" />
           </div>
           <div class="chat_right_item_2">
-            <div class="chat_right_time">{{ item.time }}</div>
             <div class="chat_right_content">
-              {{ item.msg }}
+              {{ item.text }}
             </div>
           </div>
         </div>
@@ -43,72 +44,113 @@
         id="chat_context_item"
         cols="30"
         rows="10"
-        v-model="context"
+        v-model="inputValue"
         placeholder="请提问..."
         ref="input"
       ></textarea>
-
-      <div class="chat_commit" @click="commit" id="button">发送</div>
+      <div class="chat_commit" @click="onSendChat" id="button">发送</div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { showToast, Loading } from 'vant'
-import { ref, reactive, nextTick, onMounted, onUnmounted } from 'vue'
-import { currentChatTime } from '@/utils/util'
-import axios from 'axios'
-import { transformMarkdown } from '@/utils/util'
+import { showToast } from 'vant'
+import { ref, reactive, nextTick, toRaw } from 'vue'
+import { formatChatTime } from '@/utils/util'
 
-let chat_context_item = ref(null)
-let context = ref('')
-let Message = reactive([])
-let botMessage = reactive([])
+import { transformMarkdown } from '@/utils/util'
+import { getChatGPTAnswer } from '@/api/ServerApi'
+import { getLocalData } from '@/utils/util'
 let throttle = ref(false) // 节流阀
 let avatar = ref('') // 头像
-let inputTop = ref(0) // 输入框距离页面顶部的距离
-let keyboardHeight = ref(0) // 软键盘的高度
-import { showLoadingToast, closeToast } from 'vant'
+const inputValue = ref('')
+const dialogData: Array<any> = reactive([])
+
 // 获取中间对话元素
 const myElement = ref<HTMLElement | null>(null)
 // 获取输入框
 const input = ref<HTMLElement | null>(null)
-
-onMounted(() => {
-  // 获取本地头像、聊天记录
-  getLocalData()
-})
-onUnmounted(() => {
-  window.removeEventListener('resize', onResize)
-})
-
-// 从本地获取页面信息
-// chatall所有对话内容用于页面展示，chatbot是用户和AI的对话用于请求
-const getLocalData = () => {
-  const chatAll = localStorage.getItem('chatall')
-  const ChatAllData = chatAll ? JSON.parse(chatAll) : []
-  const botMsg = localStorage.getItem('chatbot')
-  const botData = botMsg ? JSON.parse(botMsg) : []
-  const userInfo = localStorage.getItem('userinfo')
-  if (userInfo) {
-    avatar = JSON.parse(userInfo).avatar
+let user = getLocalData('userinfo')
+avatar.value = user ? user.avatar : ''
+// type: 2 是自己 1 是AI
+let id = 0
+let chatDataFormat = (time: number, type: number, text: string) => {
+  return {
+    time,
+    type,
+    text,
+    id: id++,
   }
-  if (chatAll) {
-    ChatAllData.forEach((e) => {
-      //@ts-ignore
-      Message.push(e)
-    })
-    if (botMsg) {
-      botData.forEach((e) => {
-        //@ts-ignore
-        botMessage.push(e)
-      })
+}
+// 计算超时三分钟
+let isShowTime = (id: number) => {
+  const timestamp1 = new Date().getTime()
+  const temp = dialogData
+  //@ts-ignore
+  const timestamp2 = toRaw(temp)[0].time
+
+  const timeDifference = Math.abs(timestamp1 - timestamp2)
+  const threeMinutesInMilliseconds = 3 * 60 * 1000 // 3分钟的毫秒数
+  return timeDifference >= threeMinutesInMilliseconds
+}
+
+// 请求数据
+let onRequest = (content: string) => {
+  return new Promise(async (solve) => {
+    if (!user) {
+      let buffer = chatDataFormat(
+        new Date().getTime(),
+        1,
+        '请登录后再使用本功能~'
+      )
+      solve(buffer)
+      return
     }
-    pullBottom()
-    window.addEventListener('resize', onResize)
+    let key = '97957ed45a4c72ff80fd0776d1472c60'
+    console.log(content)
+
+    let result = await getChatGPTAnswer(key, content)
+    console.log(result)
+
+    if (result.status == 0) {
+      let buffer = chatDataFormat(
+        new Date().getTime(),
+        1,
+        '似乎出了一点问题，请稍后再试...'
+      )
+      solve(buffer)
+      return
+    }
+    let html = transformMarkdown(result.data)
+    let buffer = chatDataFormat(new Date().getTime(), 1, html)
+    solve(buffer)
+  })
+}
+
+let onSendChat = async () => {
+  if (handleInput(inputValue) === '') {
+    showToast('请输入内容')
+    return
+  } else {
+    const value = inputValue.value
+    inputValue.value = ''
+    dialogData.push(chatDataFormat(new Date().getTime(), 2, value))
+    dialogData.push(
+      chatDataFormat(new Date().getTime(), 1, '请稍后，正在思考哟~')
+    )
+
+    dialogData.push(await onRequest(value))
+    console.log(dialogData)
   }
 }
 
+dialogData.push(
+  chatDataFormat(
+    new Date().getTime(),
+    1,
+    '你好！~~ 我是智能AI助手，您有任何问题都可以询问我哟，我将尽我所能解决您的问题！'
+  )
+)
 // 默认触底
 const pullBottom = async () => {
   await nextTick(() => {
@@ -127,120 +169,6 @@ const handleInput = (text: any) => {
   // 返回处理后的字符串
   return text
 }
-
-const onFocus = () => {
-  // 获取输入框距离页面顶部的距离
-  if (input.value) {
-    inputTop.value = input.value.getBoundingClientRect().top
-  }
-}
-
-const onResize = () => {
-  // 获取窗口可见区域的高度
-  const windowHeight =
-    document.documentElement.clientHeight || window.innerHeight
-  if (input.value) {
-    // 计算软键盘的高度
-    keyboardHeight.value =
-      windowHeight - inputTop.value - input.value.offsetHeight
-  }
-}
-
-// 机器人回复
-const botReturn = async () => {
-  let flag
-  // 设置API请求URL
-  const apiUrl = 'https://api.openai.com/v1/chat/completions'
-
-  // 设置请求参数
-  const params = {
-    model: 'gpt-3.5-turbo',
-    messages: botMessage.slice(-3),
-    max_tokens: 500,
-    temperature: 0.5,
-    stream: true, // 流式输出
-  }
-  const LocalOptions = {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization:
-        'Bearer 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',
-    },
-    timeout: 10000, // 超时时间
-  }
-  axios
-    .post(apiUrl, params, LocalOptions)
-    .then((res) => {
-      if (res.status === 200) {
-        const obj = {
-          role: 'assistant',
-          content: res.data.choices[0].message.content,
-        }
-        // @ts-ignore
-        // AI回答内容
-        botMessage.push(obj)
-        // 转成markdown
-        const result = transformMarkdown(res.data.choices[0].message.content)
-        // 一条AI回答数据
-        const option = {
-          isbot: true,
-          time: currentChatTime(),
-          msg: result,
-        }
-        //@ts-ignore
-        Message.push(option)
-
-        pullBottom()
-        throttle.value = false
-      }
-      localStorage.setItem('chatbot', JSON.stringify(botMessage))
-      localStorage.setItem('chatall', JSON.stringify(Message))
-    })
-    .catch(() => {
-      const option = {
-        isbot: true,
-        time: currentChatTime(),
-        msg: '似乎出了一点问题，请稍后再试...',
-      }
-      closeToast()
-      //@ts-ignore
-      Message.push(option)
-      pullBottom()
-      throttle.value = false
-      localStorage.setItem('chatbot', JSON.stringify(botMessage))
-      localStorage.setItem('chatall', JSON.stringify(Message))
-    })
-}
-
-// 提交
-const commit = () => {
-  if (!throttle.value) {
-    const toast = showLoadingToast({
-      message: '请稍后，AI正在思考~',
-      duration: 0,
-      forbidClick: true,
-    })
-    const option = {
-      isbot: false,
-      time: currentChatTime(),
-      msg: handleInput(context),
-    }
-    if (option.msg === '') {
-      showToast('请输入内容')
-      return
-    }
-    throttle.value = true
-
-    //@ts-ignore
-    Message.push(option)
-    const botMsg = { role: 'user', content: option.msg }
-    //@ts-ignore
-    botMessage.push(botMsg)
-    pullBottom()
-    context.value = ''
-    botReturn()
-  }
-}
 </script>
 
 <style scoped lang="scss">
@@ -250,7 +178,6 @@ const commit = () => {
   margin: auto;
   border-radius: 10px;
   border: 2px solid #f4f5f7;
-  background-color: #f7f9fb;
 }
 .clearfix {
   &::after {
@@ -295,8 +222,7 @@ const commit = () => {
 }
 .chat_left {
   width: 100%;
-  min-height: 120px;
-  margin-top: 20px;
+  // height: 100px;
 }
 .chat_left_item_1 {
   width: 35px;
@@ -317,17 +243,18 @@ const commit = () => {
   }
 }
 .chat_left_item_2 {
-  width: 55%;
-  min-height: 100px;
+  width: 75%;
+
   float: left;
-  margin-top: 10px;
+
   .chat_left_chat {
     float: left;
   }
   .chat_left_content {
     padding: 15px;
-    margin-top: 10px;
-    background-color: #f4f5f7;
+    margin-top: 3%;
+    background-color: #fff;
+
     display: inline-block;
     border-radius: 10px;
     border-top-left-radius: 0px;
@@ -347,8 +274,12 @@ pre {
 /* 右边 */
 .chat_right {
   width: 100%;
-  height: 120px;
-  margin-top: 20px;
+  // min-height: 100px;
+}
+.chat_right::after {
+  content: '';
+  display: table;
+  clear: both;
 }
 .chat_right_item_1 {
   width: 35px;
@@ -363,10 +294,10 @@ pre {
   border-radius: 25px;
 }
 .chat_right_item_2 {
-  width: 55%;
-  height: 100px;
+  width: 75%;
+  // height: 100px;
   float: right;
-  margin-top: 10px;
+  // margin-top: 10px;
 }
 .chat_right_time {
   width: 100%;
@@ -380,7 +311,7 @@ pre {
   border-top-right-radius: 0px;
   background-color: #be79df;
   color: white;
-  max-width: 230px;
+  max-width: 18rem;
   overflow: scroll;
   line-height: 20px;
   font-size: 14px;
@@ -435,3 +366,4 @@ pre {
   border-style: solid;
 }
 </style>
+@/api/ServerAPI

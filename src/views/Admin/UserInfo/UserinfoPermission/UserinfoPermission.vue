@@ -56,15 +56,6 @@ const route = useRoute()
 const router = useRouter()
 const adminUserInfo = useStore().adminUserInfo
 const { user } = storeToRefs(adminUserInfo)
-// [
-//       { text: '杭州', value: 'Hangzhou' },
-//       { text: '宁波', value: 'Ningbo' },
-//       { text: '温州', value: 'Wenzhou' },
-//       { text: '绍兴', value: 'Shaoxing' },
-//       { text: '湖州', value: 'Huzhou' },
-//     ]
-// 注意！ ！ ！vant2->vant4 必须用 对象数组 格式 ,text和value必传
-// https://vant-contrib.gitee.io/vant/#/zh-CN/picker
 const columns = reactive([
   { text: '超级管理员', value: '超级管理员' },
   { text: '管理员', value: '管理员' },
@@ -76,6 +67,8 @@ onMounted(() => {
 })
 const permission = async () => {
   let result = await adminUserInfo.setPermission(valueData, id)
+  console.log(result)
+
   if (result == 1) {
     showSuccessToast('操作成功！')
     router.push({ path: '/userinfo' })

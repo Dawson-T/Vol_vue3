@@ -7,7 +7,7 @@ export const oauthUrl = () => {
     url: '/user/login',
     data: {
       // 这里指向跳转的地址
-      redirect_uri: encodeURI('http://www.ctbucqt.cn:8080/login/'),
+      redirect_uri: encodeURI('http://www.ctbucqt.cn/login'),
     },
   })
 }

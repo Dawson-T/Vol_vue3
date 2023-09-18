@@ -26,8 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { Swipe, SwipeItem } from 'vant'
-import { ref, reactive } from 'vue'
+import {  reactive } from 'vue'
 const images = reactive([
   {
     imgUrl: 'https://olrando.oss-cn-chengdu.aliyuncs.com/img/duiqi.jpg',

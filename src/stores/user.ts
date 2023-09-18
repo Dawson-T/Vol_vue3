@@ -43,19 +43,25 @@ const userStore = defineStore(Names.USER, {
     },
     // 展示权限
     async ConfirmCurrentPermission() {
+      // const myAuth = {
+      //   isAdmin: '',
+      //   authority:'',
+      // }
+      const permissionMapping: { [key: number]: string } = {
+        1: '超级管理员',
+        2: '管理员',
+        0: '普通用户',
+      }
       const result = await getCurrentPermission()
       if (result.status === 1) {
         // @ts-ignore
         let currentPermission = result.authority
         if (currentPermission === 1) {
           this.confirmAdmin = true
-          this.Permission = '超级管理员'
-        } else if (currentPermission === 2) {
-          this.confirmAdmin = true
-          this.Permission = '管理员'
+          this.Permission = permissionMapping[currentPermission]
         } else {
           this.confirmAdmin = false
-          this.Permission = '用户'
+          this.Permission = permissionMapping[currentPermission]
         }
       }
     },

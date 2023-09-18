@@ -137,9 +137,6 @@ const onLoad = async () => {
       top: 5px;
     }
     .title-h1 {
-      height: 15%;
-      font-size: 35px;
-      padding-top: 2%;
       background: linear-gradient(to right, #ff7f50, #6495ed);
       font-family: $globalFontFamily;
       -webkit-background-clip: text;
@@ -211,7 +208,7 @@ const onLoad = async () => {
   justify-content: flex-start;
 }
 .card {
-  height: 260px;
+  min-height: 260px;
   width: 45%;
   margin-left: 3.5vw;
   margin-bottom: 3vh;
