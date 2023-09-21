@@ -15,7 +15,7 @@ export const mergeObjectsByDifferentId = (arr1: any, arr2: any) => {
 }
 
 // 图片处理模块
-const fileToDataURL = (file: Blob): Promise<any> => {
+export const fileToDataURL = (file: Blob): Promise<any> => {
   return new Promise((resolve) => {
     const reader = new FileReader()
     reader.onloadend = (e) => resolve((e.target as FileReader).result)
@@ -39,18 +39,21 @@ const canvastoFile = (
     canvas.toBlob((blob) => resolve(blob), type, quality)
   )
 }
+
 /**
  * 图片压缩方法
- * @param {Object}  file 图片文件
- * @param {Nubmber} quality 压缩质量参数
- * @returns 压缩后的新图片
+ * @param fileName 文件名
+ * @param base64 base64编码
+ * @param quality 压缩质量参数
+ * @returns
  */
-export const compressionFile = async (file, quality = 0.2) => {
-  const fileName = file.file.name
-
+export const compressionFile = async (
+  fileName: string,
+  base64: string,
+  quality = 0.2
+) => {
   const canvas = document.createElement('canvas')
   const context = canvas.getContext('2d') as CanvasRenderingContext2D
-  const base64 = file.content
   const type = getImageTypeFromBase64(base64)
   const img = await dataURLToImage(base64)
   canvas.width = img.width
@@ -83,10 +86,6 @@ const getImageTypeFromBase64 = (base64Data: string) => {
 
 // 转markdown语法--gpt页面
 import MarkdownIt from 'markdown-it'
-export const transformMarkdown = (text: string) => {
-  const md = new MarkdownIt()
-  return md.render(text)
-}
 
 // 获取本地缓存 key为缓存的名称
 export const getLocalData = (key: string) => {
@@ -97,7 +96,6 @@ export const getLocalData = (key: string) => {
     return false
   }
 }
-
 // 设置本地缓存
 export const setLocalData = (key: string, value: any) => {
   if (key && value) {
@@ -166,3 +164,48 @@ export const isLogin = (): boolean => {
   }
   return false
 }
+
+class utils {
+  /**
+   *
+   * @param text 文字
+   * @returns 富文本处理后的文字内容
+   */
+  static transformMarkdown = (text: string) => {
+    const md = new MarkdownIt()
+    return md.render(text)
+  }
+  /**
+   * 移除对象中的空值属性
+   * @param {Object} obj - 要处理的对象
+   * @returns {Object} - 移除空值属性后的新对象
+   */
+  static removeEmptyProperties = (obj: any) => {
+    const cleanedObject = Object.assign({}, obj)
+
+    for (const key in cleanedObject) {
+      if (
+        cleanedObject[key] === null ||
+        cleanedObject[key] === undefined ||
+        cleanedObject[key] === ''
+      ) {
+        delete cleanedObject[key]
+      }
+    }
+
+    return cleanedObject
+  }
+  // 机型判断
+  static isMobile = () => {
+    if (
+      window.navigator.userAgent.match(
+        /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+      )
+    ) {
+      return true // 移动端
+    } else {
+      return false // PC端
+    }
+  }
+}
+export default utils

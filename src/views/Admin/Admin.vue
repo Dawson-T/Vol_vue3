@@ -9,7 +9,7 @@
           alt=""
         />
       </div>
-      <van-grid :column-num="3" icon-size="40px" clickable>
+      <van-grid :column-num="3" icon-size="35px" clickable>
         <van-grid-item
           v-for="item in list"
           icon-prefix="iconfont"
@@ -25,18 +25,26 @@
 <script setup lang="ts">
 let list = [
   { icon: ' icon-icon-quanxian', path: '/userauthorization', text: '权限审批' },
-
   {
     icon: ' icon-icon_xinyong_xianxing_jijin-207',
     path: '/activitieslist',
     text: '活动报名',
   },
-
   { icon: ' icon-fankui', path: '/feedbackinfo', text: '意见反馈' },
   { icon: ' icon-umbrella', path: '/borrowingInfopage', text: '爱心雨伞' },
   { icon: ' icon-xiaoyuanzixun-01', path: '/userinfo', text: '用户信息' },
   { icon: ' icon-fabu-', path: '/activiesmanage', text: '活动管理' },
+  {
+    icon: ' icon-fabu-',
+    path: '/editarticle',
+    text: '发布文章',
+  },
+  { icon: ' icon-fabu-', path: '/activiesmanage', text: '活动管理' },
+  { icon: ' icon-fabu-', path: '/activiesmanage', text: '活动管理' },
 ]
+const goPc = () => {
+  console.log('去pc端')
+}
 </script>
 
 <style scoped lang="scss">

@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { oauthUrl } from '@/api/user'
 import { showToast } from 'vant'
-
+import utils from '@/utils/util'
 const menuItems = [
   { icon: 'manager-o', text: '志愿者认证' },
   { icon: 'records', text: '志愿者报名' },
@@ -31,12 +31,19 @@ const menuItems = [
   { icon: 'search', text: '关于青队' },
   { icon: 'setting-o', text: '设置' },
 ]
+
 const login = async () => {
   oauthUrl().then((res: any) => {
     if (res.status) {
-      // 开发模式的跳转地址
-      let url = res.authorizeUrl
-      window.location.href = url
+      let url
+      if (utils.isMobile()) {
+        // 开发模式的跳转地址
+        url = res.authorizeUrl
+        window.location.href = url
+      } else {
+        url = res.pcAuthorizeUrl
+        window.location.href = url
+      }
     }
   })
 }

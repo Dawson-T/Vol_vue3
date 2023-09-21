@@ -6,8 +6,6 @@ import '@/styles/index.scss'
 import './assets/iconfont/iconfont.css'
 import App from './App.vue'
 import router from './router'
-
-// 按需引入
 import vant, { Lazyload } from 'vant'
 import 'vant/lib/index.css'
 const app = createApp(App)
@@ -24,5 +22,4 @@ console.log(
     "font-family: 'american typewriter' ; "
 )
 app.use(router)
-
 app.mount('#app')

@@ -7,7 +7,7 @@ export const oauthUrl = () => {
     url: '/user/login',
     data: {
       // 这里指向跳转的地址
-      redirect_uri: encodeURI('http://www.ctbucqt.cn/login'),
+      redirect_uri: encodeURI('http://www.ctbucqt.cn:8080/login'),
     },
   })
 }
@@ -30,8 +30,8 @@ export const ApplyPermission = (role, reason) => {
     needToken: true,
   })
 }
-// 获取当前权限
 
+// 获取当前权限
 export const getCurrentPermission = () => {
   return http({
     method: 'POST',

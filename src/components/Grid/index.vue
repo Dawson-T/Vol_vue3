@@ -1,5 +1,5 @@
 <template>
-  <van-grid icon-size="40px" :column-num="3" clickable>
+  <van-grid icon-size="35px" :column-num="3" clickable>
     <!-- icon前面要加一个空格才能显示图标 -->
     <van-grid-item
       icon=" icon-xiaoyuanzixun-01"

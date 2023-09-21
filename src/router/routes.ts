@@ -102,12 +102,18 @@ const routes = [
     name: 'BorrowingInfoPage',
     component: () => import('@/views/Admin/BorrowingInfo/BorrowingInfo.vue'),
   },
-  // NewsDetail
+  // Article
   {
     path: '/article',
     name: 'Article',
     component: () => import('@/views/Article/Article.vue'),
   },
+  {
+    path: '/editarticle',
+    name: 'EditArticle',
+    component: () => import('@/views/Admin/EditArticle/EditArticle.vue'),
+  },
+
   {
     path: '/404',
     name: '404',

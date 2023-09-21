@@ -228,3 +228,62 @@ export const updateFormData = (data) => {
     needToken: true,
   })
 }
+
+// 文章获取草稿
+export const getArticleDraft = () => {
+  return http({
+    method: 'POST',
+    url: '/auth/new/draft/get',
+    needToken: true
+  })
+}
+// 添加/更新文章草稿
+export const updateArticleDraft = (data) => {
+  return http({
+    method: 'POST',
+    url: '/auth/new/draft/add',
+    data: data,
+    needToken: true
+  })
+}
+
+// 删除文字草稿
+export const delArticleDraft = () => {
+  return http({
+    method: 'POST',
+    url: '/auth/new/draft/del',
+    // data: data,
+    needToken: true
+  })
+}
+
+// 发布文章
+export const publishArticle = (data) => {
+  return http({
+    method: 'POST',
+    url: '/auth/new/add',
+    data: data,
+    needToken: true
+  })
+}
+class ServerAPIs {
+  // 获取文章详情
+  static getArticleDetail = (id) => {
+    return http({
+      method: 'POST',
+      url: '/auth/new/getdetail',
+      data: { id },
+      needToken: true
+    })
+  }
+  // 获取文章列表
+  static getArticleList = (data) => {
+    return http({
+      method: 'POST',
+      url: '/new/getnews',
+      data: data,
+      needToken: false
+    })
+  }
+}
+export default ServerAPIs

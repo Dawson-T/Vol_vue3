@@ -58,7 +58,7 @@ import { showToast } from 'vant'
 import { ref, reactive, nextTick, toRaw } from 'vue'
 import { formatChatTime } from '@/utils/util'
 
-import { transformMarkdown } from '@/utils/util'
+import utils from '@/utils/util'
 import { getChatGPTAnswer } from '@/api/ServerApi'
 import { getLocalData } from '@/utils/util'
 let throttle = ref(false) // 节流阀
@@ -121,7 +121,7 @@ let onRequest = (content: string) => {
       solve(buffer)
       return
     }
-    let html = transformMarkdown(result.data)
+    let html = utils.transformMarkdown(result.data)
     let buffer = chatDataFormat(new Date().getTime(), 1, html)
     solve(buffer)
   })

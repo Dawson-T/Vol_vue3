@@ -97,10 +97,15 @@ const submitForm = async () => {
 const afterRead = async (file) => {
   try {
     // 压缩图
-    const base64 = await compressionFile(file)
+    const fileName = file.file.name
+    const preBase64 = file.content
+    const base64 = await compressionFile(fileName, preBase64)
+    console.log(file)
+
     // 不压缩
     // const base64 = file.content
     const res = await uploadImgData(base64)
+
     uploadFormData.images.push(res.image)
     file.status = 'true'
     file.message = msgMap.sucMsg
@@ -113,7 +118,7 @@ const afterRead = async (file) => {
   }
 }
 // 过滤敏感词 返回过滤后的字符
-const sensitiveWordsFilter = (str) => {
+const sensitiveWordsFilter = (str:string) => {
   // 需要敏感词汇集，这里仅做测试
   const sensitiveWord: string[] = ['sb', '傻逼', '笨蛋', 'nt', '草']
   let ac = new AhoCorasick(sensitiveWord)

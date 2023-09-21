@@ -14,12 +14,12 @@
     </van-divider>
     <!-- 卡片 开始 -->
     <!-- 发布时间 -->
-    <div v-for="item in imgList">
-      <van-divider>发布时间：{{ item.time }}</van-divider>
-      <div class="card" @click="goDetailPage">
+    <div v-for="item in dataList">
+      <van-divider>发布时间：{{ requestTime(item.created_at) }}</van-divider>
+      <div class="card" @click="goDetailPage(item.id)">
         <img :src="item.img" class="card-img" v-lazy="item.img" />
         <div class="card-body">
-          <h2 class="card-title">{{ item.text }}</h2>
+          <h2 class="card-title">{{ item.intro }}</h2>
         </div>
       </div>
     </div>
@@ -35,27 +35,28 @@ import Swipe from '@/components/Swipe/index.vue'
 import NoticeBar from '@/components/NoticeBar/index.vue'
 import Gird from '@/components/Grid/index.vue'
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { requestTime } from "@/utils/util";
+import ServerAPIs from '@/api/ServerAPI.js'
+import { ref, onMounted } from 'vue'
 const router = useRouter()
-const imgList = ref([
-  {
-    time: '2023-04-02',
-    text: '人工智能学院“小红帽”常青藤青年志愿者服务队123456',
-    img: 'https://picsum.photos/500/300?random=1',
-  },
-  {
-    time: '2023-04-02',
-    text: '人工智能学院“小红帽”常青藤青年志愿者服务队123456',
-    img: 'https://picsum.photos/500/300?random=2',
-  },
-  {
-    time: '2023-04-02',
-    text: '人工智能学院“小红帽”常青藤青年志愿者服务队123456',
-    img: 'https://picsum.photos/500/300?random=3',
-  },
-])
-const goDetailPage = () => {
-  router.push({ name: 'Article', query: { id: 1 } })
+let dataList = ref([])
+let limit = 3
+let page = 0
+onMounted(() => {
+  getArticleListData()
+})
+const getArticleListData = async () => {
+  let option = {
+    limit,
+    page,
+  }
+  const res = await ServerAPIs.getArticleList(option)
+  if (res.status === 1) {
+    dataList.value = res.data
+  }
+}
+const goDetailPage = (id: number) => {
+  router.push({ name: 'Article', query: { id } })
 }
 </script>
 

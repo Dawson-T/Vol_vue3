@@ -1,10 +1,17 @@
 <template>
   <div class="container">
-    <article v-if="list.length == 0">
-      <h1>重庆工商大学人工智能学院“小红帽”常青藤青年志愿者服务队</h1>
-      <p>发布日期: 2023-09-12</p>
+    <article v-if="loading">
+      <h1 v-html="richTextTitle"></h1>
+      <p>发布日期: {{ requestTime(richTextTime) }}</p>
       <van-divider />
-      <div class="content" v-html="richText"></div>
+      <Editor
+        id="wangEditor"
+        mode="default"
+        style="min-height: 301px; overflow-y: hidden"
+        @onCreated="handleCreated"
+        :defaultConfig="editorConfig"
+        v-model="richTextContent"
+      />
     </article>
     <!-- 骨架屏 -->
     <ArticleView v-else />
@@ -12,22 +19,59 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, shallowRef, onBeforeUnmount } from 'vue'
-import { transformMarkdown } from '@/utils/util'
+import { ref, onMounted, shallowRef } from 'vue'
 import ArticleView from '@/components/ArticleView/ArticleView.vue'
-let list = ref([])
-let richText = ref('<p>hello</p>')
-let loading = ref(true)
+import ServerAPIs from '@/api/ServerAPI'
+import { Editor } from '@wangeditor/editor-for-vue'
+import { requestTime } from '@/utils/util'
+import type { IEditorConfig } from '@wangeditor/editor'
+import { useRoute } from 'vue-router'
+const route = useRoute()
+
+// 初始化 MENU_CONF 属性
+const editorConfig: Partial<IEditorConfig> = {
+  // TS 语法
+  // const editorConfig = {                       // JS 语法
+  MENU_CONF: {},
+  // 其他属性...
+}
+let richTextObj = ref({ detail: '', title: '', created_at: '' })
+let richTextTitle = ref('')
+let richTextContent = ref('')
+let richTextTime = ref('')
+let loading = ref(false)
+editorConfig.MENU_CONF['lineHeight'] = {
+  lineHeightList: ['2.5'],
+}
+editorConfig.MENU_CONF['emotion'] = {
+  emotions: '😀 😃 😄 😁 😆 😅 😂 🤣 😊 😇 🙂 🙃 😉'.split(' '), // 数组
+}
+editorConfig.MENU_CONF['fontFamily'] = { fontFamilyList: ['Tahoma'] }
 const editorRef = shallowRef()
+const handleCreated = (editor: any) => {
+  editorRef.value = editor // 记录 editor 实例，重要！
+  editor.disable()
+}
+
 onMounted(() => {
-  setTimeout(() => {
-    richText.value =
-      '<p>模拟 Ajax 异步设置内容</p><br/><p>模拟 Ajax 异步设置内容</p><br/><p>模拟 Ajax 异步设置内容</p><br/><p>模拟 Ajax 异步设置内容</p><br/><p>模拟 Ajax 异步设置内容</p><br/><p>模拟 Ajax 异步设置内容</p><br/><p>模拟 Ajax 异步设置内容</p><br/><p>模拟 Ajax 异步设置内容</p><br/>'
-  }, 1500)
+  getArticleDetailData()
 })
+// 获取文章详情
+const getArticleDetailData = async () => {
+  const id = route.query.id
+  const res = await ServerAPIs.getArticleDetail(id)
+  if (res.status === 1) {
+    richTextObj.value = res.data[0]
+    console.log(richTextObj.value)
+    richTextContent.value = richTextObj.value.detail
+    richTextTitle.value = richTextObj.value.title
+    richTextTime.value = richTextObj.value.created_at
+    loading.value = true
+  }
+}
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 header {
   background-color: #333;
   color: #fff;
@@ -50,6 +94,9 @@ p {
   line-height: 1.6;
 }
 
+:deep(#wangEditor .w-e-image-container img) {
+  width: 100vw;
+}
 .content {
 }
 </style>
