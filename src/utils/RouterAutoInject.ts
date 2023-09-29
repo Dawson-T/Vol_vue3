@@ -18,57 +18,57 @@
  * 路由注入
  * @returns views文件下全部页面的路由
  */
-export const generateRoutes = async () => {
-  const routes: any[] = []
-  // 第一层
-  const modulesFiles1: any = import.meta.glob('../views/*/*.vue')
-  const modulesName1 = Object.keys(modulesFiles1).filter((item: any) => true)
-  await Promise.all(
-    modulesName1.map(async (item: string) => {
-      const name = item.split('/')[2]
-      const component = item.replace('..', '@')
-      const path = '/' + name.toLowerCase()
-      const obj = {
-        name,
-        path,
-        component,
-      }
-      routes.push(obj)
-    })
-  )
-  // 第二层
-  const modulesFiles2: any = import.meta.glob('../views/*/*/*.vue')
-  const modulesName2 = Object.keys(modulesFiles2).filter((item: any) => true)
-  await Promise.all(
-    modulesName2.map(async (item: string) => {
-      const nameList = item.split('/')
-      const name = nameList[3]
-      const component = item.replace('..', '@')
-      const path = '/' + name.toLowerCase()
-      const obj = {
-        name,
-        path,
-        component,
-      }
-      routes.push(obj)
-    })
-  )
-  // 第三层
-  const modulesFiles3: any = import.meta.glob('../views/*/*/*/*.vue')
-  const modulesName3 = Object.keys(modulesFiles3).filter((item: any) => true)
-  await Promise.all(
-    modulesName3.map(async (item: string) => {
-      const nameList = item.split('/')
-      const name = nameList[4]
-      const component = item.replace('..', '@')
-      const path = '/' + name.toLowerCase()
-      const obj = {
-        name,
-        path,
-        component,
-      }
-      routes.push(obj)
-    })
-  )
-  return routes
-}
+// export const generateRoutes = async () => {
+//   const routes: any[] = []
+//   // 第一层
+//   const modulesFiles1: any = import.meta.glob('../views/*/*.vue')
+//   const modulesName1 = Object.keys(modulesFiles1).filter((item: any) => true)
+//   await Promise.all(
+//     modulesName1.map(async (item: string) => {
+//       const name = item.split('/')[2]
+//       const component = item.replace('..', '@')
+//       const path = '/' + name.toLowerCase()
+//       const obj = {
+//         name,
+//         path,
+//         component,
+//       }
+//       routes.push(obj)
+//     })
+//   )
+//   // 第二层
+//   const modulesFiles2: any = import.meta.glob('../views/*/*/*.vue')
+//   const modulesName2 = Object.keys(modulesFiles2).filter((item: any) => true)
+//   await Promise.all(
+//     modulesName2.map(async (item: string) => {
+//       const nameList = item.split('/')
+//       const name = nameList[3]
+//       const component = item.replace('..', '@')
+//       const path = '/' + name.toLowerCase()
+//       const obj = {
+//         name,
+//         path,
+//         component,
+//       }
+//       routes.push(obj)
+//     })
+//   )
+//   // 第三层
+//   const modulesFiles3: any = import.meta.glob('../views/*/*/*/*.vue')
+//   const modulesName3 = Object.keys(modulesFiles3).filter((item: any) => true)
+//   await Promise.all(
+//     modulesName3.map(async (item: string) => {
+//       const nameList = item.split('/')
+//       const name = nameList[4]
+//       const component = item.replace('..', '@')
+//       const path = '/' + name.toLowerCase()
+//       const obj = {
+//         name,
+//         path,
+//         component,
+//       }
+//       routes.push(obj)
+//     })
+//   )
+//   return routes
+// }

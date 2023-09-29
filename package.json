@@ -4,11 +4,9 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite --mode development",
-    "prod": "vite --mode production",
-    "build:dev": "vite build --mode development",
-    "build:prod": "vite build --mode production",
-    "preview": "vite preview",
+    "dev": "vite --mode development --open",
+    "build": "vite build --mode production",
+    "preview": "vite preview --open",
     "test:unit": "vitest",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false"

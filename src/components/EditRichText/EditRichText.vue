@@ -73,10 +73,10 @@ onMounted(() => {
   getArticleDraftData()
 })
 const getArticleDraftData = async () => {
-  const res = await getArticleDraft()
-  console.log(res.data[0])
-  titleValueHtml.value = res.data[0].title
-  valueHtml.value = res.data[0].detail
+  const res = await getArticleDraft(1)
+  console.log(res)
+  titleValueHtml.value = res.data.title
+  valueHtml.value = res.data.detail
 }
 // 更新草稿
 const updateArticleDraftData = async () => {
@@ -102,6 +102,7 @@ const publishArticleData = async () => {
   }
   // let newOption = utils.removeEmptyProperties(option)
   const res = await publishArticle(option)
+
   if (res.status === 1) {
     showSuccessToast('发布成功')
   } else {

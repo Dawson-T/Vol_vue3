@@ -80,12 +80,7 @@
 
 <script setup lang="ts">
 import { Image as VanImage, showImagePreview } from 'vant'
-import {
-  postLiked,
-  postIsLike,
-  getCommunityData,
-  getAuthCommunityData,
-} from '@/api/ServerApi'
+import { postLiked, postIsLike, getCommunityData } from '@/api/ServerApi'
 import {
   requestTime,
   formatChatTime,
@@ -108,24 +103,23 @@ onMounted(async () => {
 })
 
 // 登录和未登录的接口不同
-const getAuthorizedData = async (time: any, limit: number) => {
-  const getCommunityDataWithAuth = async () => {
-    const authData = await getAuthCommunityData(requestTime(time), limit)
-    console.log(authData)
+// const getAuthorizedData = async (time: any, limit: number) => {
+//   const getCommunityDataWithAuth = async () => {
+//     const authData = await getAuthCommunityData(requestTime(time), limit)
+//     console.log(authData)
+//     return authData.data
+//   }
 
-    return authData.data
-  }
-
-  const getCommunityDataWithoutAuth = async () => {
-    const communityData = await getCommunityData(requestTime(time), limit)
-    return communityData.data
-  }
-  if (isLogin()) {
-    return await getCommunityDataWithAuth()
-  } else {
-    return await getCommunityDataWithoutAuth()
-  }
-}
+//   const getCommunityDataWithoutAuth = async () => {
+//     const communityData = await getCommunityData(requestTime(time), limit)
+//     return communityData.data
+//   }
+//   if (isLogin()) {
+//     return await getCommunityDataWithAuth()
+//   } else {
+//     return await getCommunityDataWithoutAuth()
+//   }
+// }
 
 // 获取本地帖子数据(无数据向服务器获取)
 const getLocalCommunityData = async () => {
@@ -133,8 +127,8 @@ const getLocalCommunityData = async () => {
   if (communityData) {
     data.value = communityData
   } else {
-    data.value = await getAuthorizedData(requestTime(null), 10)
-
+    let result = await getCommunityData(requestTime(null), 10)
+    data.value = result.data
     setLocalData('communityData', toRaw(data).value)
   }
 }
@@ -157,7 +151,9 @@ const onRefresh = async () => {
     // 修复下拉获取不到数据问题：
     // 请在页面中获取当前时间再传入dayjs，直接在dayjs中获取的时间是进入页面的时间，下拉刷新请求的时间还是在发布之前的时间
     const time = requestTime(Date())
-    const result = await getAuthorizedData(time, 10)
+    let result = await getCommunityData(time, 10)
+    result = result.data
+
     // 响应式数组还原后再传入
     const mergeArray = mergeObjectsByDifferentId(toRaw(data).value, result)
 
@@ -175,7 +171,8 @@ const onLoad = async () => {
     // 获取每条消息的最早时间
     const lastTime = data.value[data.value.length - 1].created_at
     const time = requestTime(lastTime)
-    const result = await getAuthorizedData(time, 10)
+    let result = await getCommunityData(time, 10)
+    result = result.data
     // 追加过滤相同id的数组对象
     data.value = mergeObjectsByDifferentId(result, toRaw(data).value)
     setLocalData('communityData', toRaw(data).value)

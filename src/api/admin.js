@@ -3,7 +3,7 @@ import http from '@/utils/request'
 export const GetFeedBackInfo = () => {
   return http({
     method: 'POST',
-    url: 'auth/opt/getopts',
+    url: '/opt/getopts',
     needToken: true
   })
 }
@@ -12,7 +12,7 @@ export const GetFeedBackInfo = () => {
 export const GetUmbrellaData = (limit) => {
   return http({
     method: 'POST',
-    url: 'auth/uma/getubs',
+    url: '/umb/getubs',
     data: { limit },
     needToken: true
   })
@@ -22,7 +22,7 @@ export const GetUmbrellaData = (limit) => {
 export const GetAllUserInfo = () => {
   return http({
     method: 'POST',
-    url: 'auth/admin/getusers',
+    url: '/user/auth/getusers',
     needToken: true
   })
 }
@@ -31,7 +31,7 @@ export const GetAllUserInfo = () => {
 export const GetManageInfo = () => {
   return http({
     method: 'POST',
-    url: 'auth/admin/getadmins',
+    url: '/user/auth/getauths',
     needToken: true
   })
 }
@@ -63,7 +63,7 @@ export const CancelPermission = (id) => {
 export const getPermissionList = () => {
   return http({
     method: 'POST',
-    url: 'auth/admin/getapplys',
+    url: '/user/auth/getapts',
     needToken: true
   })
 }

@@ -104,7 +104,8 @@ const handleDrop = (event) => {
 const handleUploadImg = async (file) => {
   let fileName = file.name
   let preBase64 = await fileToDataURL(file)
-  const base64 = await compressionFile(fileName, preBase64)
+  // 0.5是压缩图片的参数，越小压缩越多画质越差
+  const base64 = await compressionFile(fileName, preBase64, 0.5)
   const res = await uploadImgData(base64)
   imgSrc.value = res.image
   isShow.value = true

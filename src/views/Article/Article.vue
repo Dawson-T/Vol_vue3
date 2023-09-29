@@ -60,9 +60,9 @@ onMounted(() => {
 const getArticleDetailData = async () => {
   const id = route.query.id
   const res = await ServerAPIs.getArticleDetail(id)
+
   if (res.status === 1) {
-    richTextObj.value = res.data[0]
-    console.log(richTextObj.value)
+    richTextObj.value = res.data
     richTextContent.value = richTextObj.value.detail
     richTextTitle.value = richTextObj.value.title
     richTextTime.value = richTextObj.value.created_at

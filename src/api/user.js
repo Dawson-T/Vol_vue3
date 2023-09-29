@@ -2,16 +2,16 @@ import http from '@/utils/request'
 
 // 重定向地址
 export const oauthUrl = () => {
+  console.log(import.meta.env.VITE_REDIRECT_URL);
   return http({
     method: 'POST',
     url: '/user/login',
     data: {
       // 这里指向跳转的地址
-      redirect_uri: encodeURI('http://www.ctbucqt.cn:8080/login'),
+      redirect_uri: encodeURI(`${import.meta.env.VITE_REDIRECT_URL}`),
     },
   })
 }
-
 // 获取用户信息
 export const oauthUser = (code) => {
   return http({
@@ -35,7 +35,7 @@ export const ApplyPermission = (role, reason) => {
 export const getCurrentPermission = () => {
   return http({
     method: 'POST',
-    url: 'auth/admin/myauth',
+    url: '/user/auth/me',
     needToken: true,
   })
 }

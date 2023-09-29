@@ -29,9 +29,9 @@
           >
         </li>
         <li v-if="confirmAdmin">
-          <router-link class="a" to="/admin"
-            ><van-icon name="setting-o" />&nbsp后台管理</router-link
-          >
+          <div class="a" @click="isPc">
+            <van-icon name="setting-o" />&nbsp后台管理
+          </div>
         </li>
         <li>
           <router-link class="a" to=""
@@ -51,8 +51,12 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useStore } from '@/stores'
 import { storeToRefs } from 'pinia'
+import util from '@/utils/util'
+import { showToast } from 'vant'
+const router = useRouter()
 const userStore = useStore().user
 // 用户信息 权限名称  权限级别 --storeToRefs转成响应式数据
 const { userInfo, confirmAdmin, Permission } = storeToRefs(userStore)
@@ -73,7 +77,13 @@ onMounted(() => {
 //     return
 //   }
 // }
-
+function isPc() {
+  if (util.isMobile()) {
+    showToast('请在PC端登录')
+  } else {
+    router.push('admin')
+  }
+}
 // 退出登录
 const logOut = () => {
   userStore.logOut()

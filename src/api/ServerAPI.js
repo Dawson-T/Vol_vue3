@@ -111,7 +111,6 @@ export const getAuthCommunityData = (time, limit) => {
     needToken: true,
   })
 }
-
 // 获取个人帖子
 export const getPersonData = (time, limit) => {
   return http({
@@ -196,7 +195,7 @@ export const getJsJDK = (url) => {
 export const uploadImgData = (base64) => {
   // 返回promise对象
   return http({
-    url: '/auth/upload/post/image',
+    url: '/upload/post/image',
     method: 'POST',
     data: {
       image: base64,
@@ -230,10 +229,11 @@ export const updateFormData = (data) => {
 }
 
 // 文章获取草稿
-export const getArticleDraft = () => {
+export const getArticleDraft = (id) => {
   return http({
     method: 'POST',
-    url: '/auth/new/draft/get',
+    url: '/arl/draft/get',
+    data: { id },
     needToken: true
   })
 }
@@ -261,7 +261,7 @@ export const delArticleDraft = () => {
 export const publishArticle = (data) => {
   return http({
     method: 'POST',
-    url: '/auth/new/add',
+    url: '/arl/add',
     data: data,
     needToken: true
   })
@@ -271,7 +271,7 @@ class ServerAPIs {
   static getArticleDetail = (id) => {
     return http({
       method: 'POST',
-      url: '/auth/new/getdetail',
+      url: '/arl/get',
       data: { id },
       needToken: true
     })
@@ -280,7 +280,7 @@ class ServerAPIs {
   static getArticleList = (data) => {
     return http({
       method: 'POST',
-      url: '/new/getnews',
+      url: '/arl/getarls',
       data: data,
       needToken: false
     })
