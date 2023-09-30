@@ -70,9 +70,9 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+
 import { useStore } from '@/stores'
-import { onMounted, ref } from 'vue'
+
 import { storeToRefs } from 'pinia'
 import { requestTime } from '@/utils/util'
 const activityStore = useStore().activity

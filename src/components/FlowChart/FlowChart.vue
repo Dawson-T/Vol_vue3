@@ -39,12 +39,9 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive } from 'vue'
-</script>
 
 <style scoped lang="scss">
-boby,
+body,
 html {
   font-family: 'Microsoft JhengHei', serif;
 }

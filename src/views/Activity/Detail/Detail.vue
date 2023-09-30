@@ -45,9 +45,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+
 import { isSignUp, SignUp } from '@/api/ServerApi'
-import { useRoute } from 'vue-router'
+
 import { getLocalData } from '@/utils/util'
 import { requestTime } from '@/utils/util'
 import { showSuccessToast, showFailToast } from 'vant'

@@ -7,6 +7,7 @@ import Home from '../views/Home/Home.vue'
 import Community from '../views/Community/Community.vue'
 import ChatGPT from '../views/ChatGPT/chatGPT.vue'
 import My from '../views/Mine/Mine.vue'
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -61,6 +62,9 @@ router.beforeEach((to, from, next) => {
     window.scrollTo(0, 0)
     next()
   }
+})
+router.afterEach((to) => {
+  // setRouteChange(to)
 })
 
 // 需要登录验证的页面 UploadPost

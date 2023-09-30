@@ -34,7 +34,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
 import { feedBackPost } from '@/api/ServerApi'
 import { showSuccessToast, showFailToast } from 'vant'
 const pattern = /^.{0,16}$/
@@ -64,7 +63,7 @@ const onSubmit = async () => {
         showSuccessToast(res.msg)
       }
     } catch {
-      showSuccessToast('未知错误！')
+      showFailToast('未知错误！')
     }
   }
 }

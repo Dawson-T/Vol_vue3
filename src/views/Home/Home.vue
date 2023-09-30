@@ -5,7 +5,7 @@
     <!-- 新闻提示 -->
     <NoticeBar :text="'使用系统遇到问题？企业微信联系 邓森'" />
     <!--  -->
-    <Gird />
+    <Grid />
     <!-- 分隔符 -->
     <van-divider
       :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px' }"
@@ -31,13 +31,8 @@
 </template>
 
 <script setup lang="ts">
-import Swipe from '@/components/Swipe/index.vue'
-import NoticeBar from '@/components/NoticeBar/index.vue'
-import Gird from '@/components/Grid/index.vue'
-import { useRouter } from 'vue-router'
-import { requestTime } from "@/utils/util";
+import { requestTime } from '@/utils/util'
 import ServerAPIs from '@/api/ServerAPI.js'
-import { ref, onMounted } from 'vue'
 const router = useRouter()
 let dataList = ref([])
 let limit = 3

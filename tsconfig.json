@@ -14,7 +14,9 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
-
-  }
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/auto-import.d.ts" // 自动导入的配置文件
+  ]
 }

@@ -105,11 +105,9 @@ import {
   GetCommentsData,
   PostCommentsData,
 } from '@/api/ServerApi'
-import { ref, onMounted, nextTick } from 'vue'
 import { requestTime, getLocalData } from '@/utils/util'
-import { useRoute } from 'vue-router'
 const route = useRoute()
-const id = ref(0) 
+const id = ref(0)
 let data = ref([])
 let comments = ref([])
 let context = ref('')

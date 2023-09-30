@@ -26,7 +26,6 @@
 </template>
 
 <script setup lang="ts">
-import {  reactive } from 'vue'
 const images = reactive([
   {
     imgUrl: 'https://olrando.oss-cn-chengdu.aliyuncs.com/img/duiqi.jpg',

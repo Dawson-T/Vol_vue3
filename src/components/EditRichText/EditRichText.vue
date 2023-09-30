@@ -29,7 +29,6 @@
 
 <script lang="ts" setup>
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
-import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import type { SlateElement, IEditorConfig } from '@wangeditor/editor'
 import { compressionFile, getLocalData, setLocalData } from '@/utils/util'

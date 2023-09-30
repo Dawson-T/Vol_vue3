@@ -8,7 +8,7 @@ import http from '@/utils/request'
 export const getChatGPTAnswer = (key, q) => {
   return http({
     method: 'POST',
-    url: '/auth/gpt/chat',
+    url: 'gpt/chat',
     data: {
       key,
       q,
@@ -35,7 +35,7 @@ export const getActivities = (time, limit) => {
 export const isSignUp = (id) => {
   return http({
     method: 'POST',
-    url: 'auth/act/isreg',
+    url: 'act/isreg',
     data: { act_id: id },
     needToken: true,
   })
@@ -44,7 +44,7 @@ export const isSignUp = (id) => {
 export const SignUp = (id) => {
   return http({
     method: 'POST',
-    url: 'auth/act/register',
+    url: 'act/register',
     data: { act_id: id },
     needToken: true,
   })
@@ -53,7 +53,7 @@ export const SignUp = (id) => {
 export const getSignUpData = () => {
   return http({
     method: 'POST',
-    url: 'auth/act/myregs',
+    url: 'act/myregs',
     needToken: true,
   })
 }
@@ -66,7 +66,7 @@ export const getSignUpData = () => {
 export const AddActive = (option) => {
   return http({
     method: 'POST',
-    url: 'auth/act/add',
+    url: 'act/add',
     data: option,
     needToken: true,
   })
@@ -76,7 +76,7 @@ export const AddActive = (option) => {
 export const DelActive = (id) => {
   return http({
     method: 'POST',
-    url: 'auth/act/del',
+    url: 'act/del',
     data: { id },
     needToken: true,
   })
@@ -106,7 +106,7 @@ export const getCommunityData = (time, limit) => {
 export const getAuthCommunityData = (time, limit) => {
   console.log(time, limit);
   return http({
-    url: `/auth/post/getposts?created_at=${time}&limit=${limit}`,
+    url: `post/getposts?created_at=${time}&limit=${limit}`,
     method: 'GET',
     needToken: true,
   })
@@ -115,7 +115,7 @@ export const getAuthCommunityData = (time, limit) => {
 export const getPersonData = (time, limit) => {
   return http({
     method: 'GET',
-    url: `/auth/post/myposts?created_at=${time}&limit=${limit}`,
+    url: `post/myposts?created_at=${time}&limit=${limit}`,
     needToken: true,
   })
 }
@@ -123,7 +123,7 @@ export const getPersonData = (time, limit) => {
 export const postLiked = (id) => {
   return http({
     method: 'POST',
-    url: '/auth/post/like',
+    url: 'post/like',
     data: { post_id: id },
     needToken: true,
   })
@@ -132,7 +132,7 @@ export const postLiked = (id) => {
 export const postIsLike = (id) => {
   return http({
     method: 'POST',
-    url: '/auth/post/islike',
+    url: 'post/islike',
     data: { post_id: id },
     needToken: true,
   })
@@ -141,7 +141,7 @@ export const postIsLike = (id) => {
 export const PostCommentsData = (option) => {
   return http({
     method: 'POST',
-    url: '/auth/post/cmt',
+    url: 'post/cmt',
     data: option,
     needToken: true,
   })
@@ -151,7 +151,7 @@ export const PostCommentsData = (option) => {
 export const GetCommentsData = (id) => {
   return http({
     method: 'POST',
-    url: '/auth/post/getcmts',
+    url: 'post/getcmts',
     data: { post_id: id },
     needToken: true,
   })
@@ -161,7 +161,7 @@ export const GetCommentsData = (id) => {
 export const deleteCard = (id) => {
   return http({
     method: 'POST',
-    url: '/auth/post/delete',
+    url: 'post/delete',
     data: { post_id: id },
     needToken: true,
   })
@@ -172,7 +172,7 @@ export const deleteCard = (id) => {
 // 借还伞请求
 export const postUmbrella = (option) => {
   return http({
-    url: '/auth/uma/bworrt',
+    url: 'uma/bworrt',
     method: 'POST',
     data: option,
     needToken: true,
@@ -182,7 +182,7 @@ export const postUmbrella = (option) => {
 // 扫码接口 --url必须使用扫码界面的地址
 export const getJsJDK = (url) => {
   return http({
-    url: '/auth/user/getjscfg',
+    url: 'user/getjscfg',
     method: 'POST',
     data: { url },
     needToken: true,
@@ -195,7 +195,7 @@ export const getJsJDK = (url) => {
 export const uploadImgData = (base64) => {
   // 返回promise对象
   return http({
-    url: '/upload/post/image',
+    url: 'upload/post/image',
     method: 'POST',
     data: {
       image: base64,
@@ -212,7 +212,7 @@ export const uploadFormDataFn = (context, images) => {
   };
   return http({
     method: 'POST',
-    url: '/auth/post/publish',
+    url: 'post/publish',
     data: data,
     needToken: true,
   })
@@ -222,7 +222,7 @@ export const uploadFormDataFn = (context, images) => {
 export const updateFormData = (data) => {
   return http({
     method: 'POST',
-    url: '/auth/post/update',
+    url: 'post/update',
     data: data,
     needToken: true,
   })
@@ -232,7 +232,7 @@ export const updateFormData = (data) => {
 export const getArticleDraft = (id) => {
   return http({
     method: 'POST',
-    url: '/arl/draft/get',
+    url: 'arl/draft/get',
     data: { id },
     needToken: true
   })
@@ -241,7 +241,7 @@ export const getArticleDraft = (id) => {
 export const updateArticleDraft = (data) => {
   return http({
     method: 'POST',
-    url: '/auth/new/draft/add',
+    url: 'arl/draft/add',
     data: data,
     needToken: true
   })
@@ -251,7 +251,7 @@ export const updateArticleDraft = (data) => {
 export const delArticleDraft = () => {
   return http({
     method: 'POST',
-    url: '/auth/new/draft/del',
+    url: 'arl/draft/del',
     // data: data,
     needToken: true
   })
