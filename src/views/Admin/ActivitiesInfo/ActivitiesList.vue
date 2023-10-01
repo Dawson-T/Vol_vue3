@@ -23,8 +23,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
 import { requestTime } from '@/utils/util'
 import { getActivities } from '@/api/ServerAPI'
 const router = useRouter()

@@ -44,7 +44,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
 import { ApplyPermission } from '@/api/user'
 import { showSuccessToast, showFailToast } from 'vant'
 let valueData = ref('')

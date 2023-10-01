@@ -23,12 +23,10 @@
 </template>
 
 <script setup lang="ts">
-import { showConfirmDialog } from 'vant'
-import { onMounted } from 'vue'
+import { showSuccessToast, showFailToast, showConfirmDialog } from 'vant'
 import { useStore } from '@/stores'
 import { storeToRefs } from 'pinia'
-import { showSuccessToast, showFailToast } from 'vant'
-import { DelActive } from '@/api/ServerApi'
+import { DelActive } from '@/api/ServerAPI'
 const activity = useStore().activity
 const { activities } = storeToRefs(activity)
 onMounted(() => {

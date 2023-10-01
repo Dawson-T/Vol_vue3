@@ -1,13 +1,15 @@
 <template>
   <div class="container">
     <article v-if="loading">
-      <h1 v-html="richTextTitle"></h1>
-      <p>发布日期: {{ requestTime(richTextTime) }}</p>
+      <div class="header">
+        <h1 v-html="richTextTitle"></h1>
+        <p class="publishDate">发布日期: {{ requestTime(richTextTime) }}</p>
+      </div>
       <van-divider />
       <Editor
         id="wangEditor"
         mode="default"
-        style="min-height: 301px; overflow-y: hidden"
+        style="min-height: 300px; overflow-y: hidden"
         @onCreated="handleCreated"
         :defaultConfig="editorConfig"
         v-model="richTextContent"
@@ -19,13 +21,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, shallowRef } from 'vue'
 import ArticleView from '@/components/ArticleView/ArticleView.vue'
 import ServerAPIs from '@/api/ServerAPI'
 import { Editor } from '@wangeditor/editor-for-vue'
 import { requestTime } from '@/utils/util'
 import type { IEditorConfig } from '@wangeditor/editor'
-import { useRoute } from 'vue-router'
 const route = useRoute()
 
 // 初始化 MENU_CONF 属性
@@ -72,12 +72,6 @@ const getArticleDetailData = async () => {
 </script>
 
 <style scoped>
-header {
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  padding: 10px 0;
-}
 .container {
   width: 100vw;
   min-height: 100vh;
@@ -85,6 +79,9 @@ header {
   padding: 5px;
   background-color: #fff;
   box-shadow: 0 2px 5px #ccc;
+  .header {
+    height: 8vh;
+  }
 }
 h1 {
   font-size: 18px;
@@ -97,6 +94,7 @@ p {
 :deep(#wangEditor .w-e-image-container img) {
   width: 100vw;
 }
-.content {
+.publishDate {
+  margin-top: 10px;
 }
 </style>

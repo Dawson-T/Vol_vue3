@@ -24,9 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { postUmbrella } from '@/api/ServerAPI'
-import FlowChart from '@/components/FlowChart/FlowChart.vue'
 import { getJDK } from '@/utils/JsSdkConfig'
 import { showFailToast, showSuccessToast } from 'vant'
 onMounted(() => {

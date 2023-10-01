@@ -2,7 +2,7 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
-import { VantResolver } from 'unplugin-vue-components/resolvers'
+import { VantResolver } from '@vant/auto-import-resolver';
 import Components from 'unplugin-vue-components/vite'
 // https://vitejs.dev/config/
 // 后端已有cors 无需 proxy 代理跨域
@@ -30,10 +30,9 @@ export default defineConfig({
       // 搜索子目录
       deep: true,
       // 组件有效的扩展名
-      extensions: ['vue', 'js', 'jsx', 'ts', 'tsx'],
-
+      extensions: ['vue', 'js', 'jsx', 'ts', 'tsx', '.mjs'],
       include: [/\.vue$/, /\.vue\?vue/, /\.js$/, /\.jsx$/, /\.ts$/, /\.tsx$/],
-      resolvers: [VantResolver({})],
+      resolvers: [VantResolver({})], // 不要引入vant打包会找不到样式
       // 允许子目录作为组件的命名空间前缀。
       // directoryAsNamespace: false,
       // 指定自动导入的组件位置，默认是 src/components
@@ -43,6 +42,7 @@ export default defineConfig({
     }),
   ],
   resolve: {
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },

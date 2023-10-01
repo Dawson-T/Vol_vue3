@@ -4,17 +4,17 @@ export const GetFeedBackInfo = () => {
   return http({
     method: 'POST',
     url: '/opt/getopts',
-    needToken: true
+    needToken: true,
   })
 }
 
 // 获取借伞记录
-export const GetUmbrellaData = (limit) => {
+export const GetUmbrellaData = (limit: any) => {
   return http({
     method: 'POST',
     url: '/umb/getubs',
     data: { limit },
-    needToken: true
+    needToken: true,
   })
 }
 
@@ -23,7 +23,7 @@ export const GetAllUserInfo = () => {
   return http({
     method: 'POST',
     url: '/user/auth/getusers',
-    needToken: true
+    needToken: true,
   })
 }
 
@@ -32,30 +32,30 @@ export const GetManageInfo = () => {
   return http({
     method: 'POST',
     url: '/user/auth/getauths',
-    needToken: true
+    needToken: true,
   })
 }
 
 // 授权管理
-export const AuthAdminPermission = (id, role) => {
+export const AuthAdminPermission = (id: any, role: any) => {
   return http({
     method: 'POST',
     url: 'auth/admin/setad',
     data: {
       user_id: id,
-      role
+      role,
     },
-    needToken: true
+    needToken: true,
   })
 }
 
 // 取消管理
-export const CancelPermission = (id) => {
+export const CancelPermission = (id: any) => {
   return http({
     method: 'POST',
     url: 'auth/admin/delad',
     data: { user_id: `${id}` },
-    needToken: true
+    needToken: true,
   })
 }
 
@@ -64,29 +64,29 @@ export const getPermissionList = () => {
   return http({
     method: 'POST',
     url: '/user/auth/getapts',
-    needToken: true
+    needToken: true,
   })
 }
 
 // 权限处理
-export const dealApplyPermission = (user_id, status) => {
+export const dealApplyPermission = (user_id: any, status: any) => {
   return http({
     method: 'POST',
     url: 'auth/admin/dealapply',
     data: {
       user_id: user_id,
-      allow: status
+      allow: status,
     },
-    needToken: true
+    needToken: true,
   })
 }
 
 // 活动报名名单
-export const getActivityDetail = (id) => {
+export const getActivityDetail = (id: any) => {
   return http({
     method: 'POST',
     url: 'auth/act/actregs',
     data: { act_id: id },
-    needToken: true
+    needToken: true,
   })
 }

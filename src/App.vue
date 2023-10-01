@@ -1,6 +1,7 @@
 <template>
   <div class="box">
-    <RouterView> </RouterView>
+    <router-view> </router-view>
+
     <van-tabbar
       v-if="
         ['/', '/home', '/my', '/community', '/chatgpt'].includes(route.path)
@@ -10,6 +11,7 @@
       active-color="#ee0a24"
       inactive-color="#000"
       placeholder
+      fixed
     >
       <van-tabbar-item
         v-for="item in tabbarList"
@@ -21,7 +23,6 @@
     </van-tabbar>
   </div>
 </template>
-
 <script setup lang="ts">
 const route = useRoute()
 const active = ref(0)

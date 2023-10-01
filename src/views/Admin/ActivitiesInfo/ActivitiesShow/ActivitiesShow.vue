@@ -6,11 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import Table from '@/components/Table/Table.vue'
 import { getActivityDetail } from '@/api/admin'
-import { useRoute } from 'vue-router'
-import { ref, onMounted } from 'vue'
-
 const route = useRoute()
 let items = ref([])
 onMounted(() => {

@@ -34,7 +34,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { feedBackPost } from '@/api/ServerApi'
+import { feedBackPost } from '@/api/ServerAPI'
 import { showSuccessToast, showFailToast } from 'vant'
 const pattern = /^.{0,16}$/
 let isPost = ref(false)

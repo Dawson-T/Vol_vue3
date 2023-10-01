@@ -4,7 +4,7 @@
       <van-tabs v-model:active="active" sticky>
         <div v-if="isSended">
           <van-tab title="进行中">
-            <div v-if="progressData">
+            <div v-if="progressData.length != 0">
               <!-- 懒加载、垂直居中、 -->
               <div class="card" v-for="item in progressData" :key="item.act_id">
                 <div class="card-left">
@@ -79,7 +79,6 @@
   </div>
 </template>
 <script setup lang="ts">
-
 import { useStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { showConfirmDialog, showSuccessToast, showFailToast } from 'vant'
@@ -89,7 +88,6 @@ const { progressData, overData, isSended } = storeToRefs(activityStore)
 onMounted(() => {
   activityStore.getSignUpData()
 })
-
 const Cancellation = (id: number) => {
   showConfirmDialog({
     title: '警告',
@@ -98,6 +96,8 @@ const Cancellation = (id: number) => {
     .then(async () => {
       // on confirm
       const status = await activityStore.cancelSignup(id)
+      console.log(status)
+
       if (status) {
         showSuccessToast('操作成功！')
         activityStore.getSignUpData()

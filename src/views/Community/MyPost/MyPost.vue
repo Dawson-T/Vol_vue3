@@ -41,8 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { deleteCard } from '@/api/community'
 import { storeToRefs } from 'pinia'
 import { useStore } from '@/stores'
 import { showConfirmDialog, showSuccessToast, showFailToast } from 'vant'

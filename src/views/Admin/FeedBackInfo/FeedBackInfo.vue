@@ -29,7 +29,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
 import { GetFeedBackInfo } from '@/api/admin'
 let list = ref([])
 let contact = '138xxxxxxx'

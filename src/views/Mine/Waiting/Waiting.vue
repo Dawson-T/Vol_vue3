@@ -5,8 +5,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { useStore } from '@/stores'
 import { getLocalData } from '@/utils/util'
 const router = useRouter()

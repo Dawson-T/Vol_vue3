@@ -2,7 +2,6 @@
 import { defineStore } from 'pinia'
 // 枚举
 import { Names } from './store-name'
-
 // 接口
 import { oauthUser, getCurrentPermission } from '@/api/user'
 // 本地缓存函数

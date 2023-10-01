@@ -29,10 +29,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
 import { getPermissionList } from '@/api/admin'
 import { requestTime } from '@/utils/util'
-import { useRouter } from 'vue-router'
 const router = useRouter()
 let list = ref(undefined)
 onMounted(() => {

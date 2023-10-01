@@ -35,8 +35,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
-import InfoCard from '@/components/UserInfoCard/UserInfoCard.vue'
 import { useStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 const adminUserInfo = useStore().adminUserInfo

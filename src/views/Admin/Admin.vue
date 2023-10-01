@@ -42,9 +42,6 @@ let list = [
   { icon: ' icon-fabu-', path: '/activiesmanage', text: '活动管理' },
   { icon: ' icon-fabu-', path: '/activiesmanage', text: '活动管理' },
 ]
-const goPc = () => {
-  console.log('去pc端')
-}
 </script>
 
 <style scoped lang="scss">

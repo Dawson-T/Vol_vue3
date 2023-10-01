@@ -45,11 +45,8 @@
 </template>
 
 <script setup lang="ts">
-
-import { isSignUp, SignUp } from '@/api/ServerApi'
-
-import { getLocalData } from '@/utils/util'
-import { requestTime } from '@/utils/util'
+import { isSignUp, SignUp } from '@/api/ServerAPI'
+import { getLocalData, requestTime } from '@/utils/util'
 import { showSuccessToast, showFailToast } from 'vant'
 const route = useRoute()
 let activity = ref({})

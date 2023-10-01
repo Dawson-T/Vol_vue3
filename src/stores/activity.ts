@@ -34,48 +34,68 @@ const activityStore = defineStore(Names.ACTIVITY, {
       },
     ],
     isLoading: false,
-    loading: false,
+    storeLoading: false,
     finished: false,
     throttle: false, // 节流阀
-    // 个人报名信息
-    progressData: undefined,
+    progressData: undefined, // 个人报名信息
     overData: undefined,
     isSended: false,
+    storeErrorMsg: '',
   }),
   getters: {},
   actions: {
     // 获取活动数据
     async getActivityData() {
-      const { data: res } = await getActivities(requestTime(Date()), 5)
-      setLocalData('activities', res)
-      this.setActivityData()
+      try {
+        this.storeErrorMsg = ''
+        const { data: res } = await getActivities(requestTime(Date()), 5)
+        setLocalData('activities', res)
+        this.setActivityData()
+      } catch {
+        this.storeErrorMsg = '获取失败'
+      } finally {
+      }
     },
-    // 设置页面数据
+    // 缓存获取页面数据
     setActivityData() {
       this.activities = getLocalData('activities')
     },
     // 下拉刷新的回调
     async onPullDownRefresh() {
-      const { data: res } = await getActivities(requestTime(Date()), 5)
-      this.activities = mergeObjectsByDifferentId(this.activities, res)
-      setLocalData('activities', this.activities)
+      try {
+        this.storeLoading = true
+        this.storeErrorMsg = ''
+        const { data: res } = await getActivities(requestTime(Date()), 5)
+        this.activities = mergeObjectsByDifferentId(this.activities, res)
+        setLocalData('activities', this.activities)
+      } catch {
+        this.storeErrorMsg = '刷新失败'
+      } finally {
+        this.storeLoading = false
+      }
     },
     // 触底刷新的回调
     async onReachBottom() {
       try {
+        this.storeErrorMsg = ''
+        this.storeLoading = true
         let time = requestTime(
           this.activities[this.activities.length - 1].created_at
         )
         const { data: res } = await getActivities(time, 5)
+        // 数据为空
         if (res.length == 0) {
           return false
         } else {
           this.activities = mergeObjectsByDifferentId(this.activities, res)
-
           setLocalData('activities', this.activities)
           return true
         }
-      } catch {}
+      } catch {
+        this.storeErrorMsg = '刷新失败'
+      } finally {
+        this.storeLoading = false
+      }
     },
     // 个人报名信息
     async getSignUpData() {
@@ -86,7 +106,8 @@ const activityStore = defineStore(Names.ACTIVITY, {
     // 取消报名
     async cancelSignup(id: number) {
       const { status: res } = await SignUp(id)
-      if (res == 2) {
+
+      if (res == 1) {
         return true
       } else {
         return false

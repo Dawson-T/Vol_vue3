@@ -15,7 +15,7 @@
         </li>
         <li>
           <router-link class="a" to="/myactivity"
-            ><van-icon name="records" />&nbsp志愿者报名</router-link
+            ><van-icon name="records-o" />&nbsp志愿者报名</router-link
           >
         </li>
         <li>
@@ -33,15 +33,14 @@
             <van-icon name="setting-o" />&nbsp后台管理
           </div>
         </li>
-        <li>
+        <!-- <li>
           <router-link class="a" to=""
             ><van-icon name="setting-o" />&nbsp设置</router-link
           >
-        </li>
-
+        </li> -->
         <li @click="logOut">
           <router-link class="a" to=""
-            ><van-icon name="setting-o" />&nbsp退出登录</router-link
+            ><van-icon name="revoke" />&nbsp退出登录</router-link
           >
         </li>
       </ul>
@@ -50,8 +49,6 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { useStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import util from '@/utils/util'

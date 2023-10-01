@@ -39,30 +39,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useStore } from '@/stores'
+import { showToast } from 'vant'
 const { user } = useStore()
 const { userInfo } = storeToRefs(user)
 
 onMounted(() => {})
 const router = useRouter()
 const goSoftware = () => {
-  router.push({ path: '/software' })
-  console.log('软件帮')
+  // router.push({ path: '/software' })
+  showToast('正在加紧开发中.')
 }
 const goIdle = () => {
-  router.push({ path: '/idle' })
-  console.log('我的闲置')
+  // router.push({ path: '/idle' })
+  showToast('正在加紧开发中.')
 }
 const goExpressage = () => {
-  router.push({ path: '/expressage' })
-  console.log('我的快递')
+  // router.push({ path: '/expressage' })
+
+  showToast('正在加紧开发中.')
 }
 const goHelping = () => {
-  router.push({ path: '/helping' })
-  console.log('我的互助')
+  // router.push({ path: '/helping' })
+  showToast('正在加紧开发中.')
 }
 </script>
 

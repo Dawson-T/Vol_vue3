@@ -2,7 +2,7 @@ import http from '@/utils/request'
 
 // 重定向地址
 export const oauthUrl = () => {
-  console.log(import.meta.env.VITE_REDIRECT_URL);
+  console.log(import.meta.env.VITE_REDIRECT_URL)
   return http({
     method: 'POST',
     url: '/user/login',
@@ -13,7 +13,7 @@ export const oauthUrl = () => {
   })
 }
 // 获取用户信息
-export const oauthUser = (code) => {
+export const oauthUser = (code: any) => {
   return http({
     method: 'POST',
     url: '/user/getinfo',
@@ -22,7 +22,7 @@ export const oauthUser = (code) => {
 }
 
 // 申请权限
-export const ApplyPermission = (role, reason) => {
+export const ApplyPermission = (role: any, reason: any) => {
   return http({
     method: 'POST',
     url: 'auth/admin/applyadm',

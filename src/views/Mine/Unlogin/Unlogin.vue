@@ -26,7 +26,7 @@ import { showToast } from 'vant'
 import utils from '@/utils/util'
 const menuItems = [
   { icon: 'manager-o', text: '志愿者认证' },
-  { icon: 'records', text: '志愿者报名' },
+  { icon: 'records-o', text: '志愿者报名' },
   { icon: 'guide-o', text: '使用指南' },
   { icon: 'search', text: '关于青队' },
   { icon: 'setting-o', text: '设置' },

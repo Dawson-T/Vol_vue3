@@ -55,10 +55,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
 import { getPermissionList, dealApplyPermission } from '@/api/admin'
-import { showSuccessToast, showFailToast, Toast } from 'vant'
-import { useRoute } from 'vue-router'
+import { showSuccessToast, showFailToast } from 'vant'
 const route = useRoute()
 let list = ref([])
 onMounted(() => {

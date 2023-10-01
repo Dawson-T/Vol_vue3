@@ -67,10 +67,7 @@
 </template>
 
 <script setup lang="ts">
-import RichText from '@/components/EditRichText/EditRichText.vue'
-import { ref } from 'vue'
-import { onMounted } from 'vue'
-import { uploadImgData } from '@/api/ServerApi'
+import { uploadImgData } from '@/api/ServerAPI'
 import { compressionFile, fileToDataURL } from '@/utils/util'
 // 照片
 const imgSrc = ref('')

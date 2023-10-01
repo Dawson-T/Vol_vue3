@@ -80,7 +80,7 @@
 
 <script setup lang="ts">
 import { Image as VanImage, showImagePreview } from 'vant'
-import { postLiked, postIsLike, getCommunityData } from '@/api/ServerApi'
+import { postLiked, postIsLike, getCommunityData } from '@/api\/ServerAPI'
 import {
   requestTime,
   formatChatTime,

@@ -1,12 +1,13 @@
 import http from '@/utils/request'
+import * as Server from './types/ServerAPI.js'
 /**
  * gpt回答
  * @param {*} key key
  * @param {*} q 问题
  * @returns
  */
-export const getChatGPTAnswer = (key, q) => {
-  return http({
+export const getChatGPTAnswer = (key: any, q: any) => {
+  return http<Server.ServerResponseData>({
     method: 'POST',
     url: 'gpt/chat',
     data: {
@@ -23,8 +24,8 @@ export const getChatGPTAnswer = (key, q) => {
  * @param {*} limit  条数
  * @returns
  */
-export const getActivities = (time, limit) => {
-  return http({
+export const getActivities = (time: any, limit: any) => {
+  return http<Server.ServerResponseData>({
     method: 'GET',
     url: `act/getacts?created_at=${time}&limit=${limit}`,
     needToken: false,
@@ -32,8 +33,8 @@ export const getActivities = (time, limit) => {
 }
 
 // 是否报名
-export const isSignUp = (id) => {
-  return http({
+export const isSignUp = (id: any) => {
+  return http<Server.ServerResponseData>({
     method: 'POST',
     url: 'act/isreg',
     data: { act_id: id },
@@ -41,8 +42,8 @@ export const isSignUp = (id) => {
   })
 }
 // 报名和取消报名
-export const SignUp = (id) => {
-  return http({
+export const SignUp = (id: any) => {
+  return http<Server.ServerResponseData>({
     method: 'POST',
     url: 'act/register',
     data: { act_id: id },
@@ -51,7 +52,7 @@ export const SignUp = (id) => {
 }
 // 个人报名全部记录
 export const getSignUpData = () => {
-  return http({
+  return http<Server.ServerResponseData>({
     method: 'POST',
     url: 'act/myregs',
     needToken: true,
@@ -63,8 +64,8 @@ export const getSignUpData = () => {
  * @param {*} option 活动参数
  * @returns
  */
-export const AddActive = (option) => {
-  return http({
+export const AddActive = (option: any) => {
+  return http<Server.ServerResponseData>({
     method: 'POST',
     url: 'act/add',
     data: option,
@@ -73,8 +74,8 @@ export const AddActive = (option) => {
 }
 
 // 删除活动
-export const DelActive = (id) => {
-  return http({
+export const DelActive = (id: any) => {
+  return http<Server.ServerResponseData>({
     method: 'POST',
     url: 'act/del',
     data: { id },
@@ -83,8 +84,8 @@ export const DelActive = (id) => {
 }
 
 // 反馈
-export const feedBackPost = (option) => {
-  return http({
+export const feedBackPost = (option: any) => {
+  return http<Server.ServerResponseData>({
     data: option,
     url: '/opt/sendopt',
     method: 'POST',
@@ -94,8 +95,8 @@ export const feedBackPost = (option) => {
 
 // -------------------------------------------社区----------------------------------------------
 // 请求社区数据
-export const getCommunityData = (time, limit) => {
-  return http({
+export const getCommunityData = (time: any, limit: any) => {
+  return http<Server.ServerResponseData>({
     url: `/post/getposts?created_at=${time}&limit=${limit}`,
     method: 'GET',
     needToken: false,
@@ -103,25 +104,25 @@ export const getCommunityData = (time, limit) => {
 }
 
 //
-export const getAuthCommunityData = (time, limit) => {
-  console.log(time, limit);
-  return http({
+export const getAuthCommunityData = (time: any, limit: any) => {
+  console.log(time, limit)
+  return http<Server.ServerResponseData>({
     url: `post/getposts?created_at=${time}&limit=${limit}`,
     method: 'GET',
     needToken: true,
   })
 }
 // 获取个人帖子
-export const getPersonData = (time, limit) => {
-  return http({
+export const getPersonData = (time: any, limit: any) => {
+  return http<Server.ServerResponseData>({
     method: 'GET',
     url: `post/myposts?created_at=${time}&limit=${limit}`,
     needToken: true,
   })
 }
 // 上传点赞情况
-export const postLiked = (id) => {
-  return http({
+export const postLiked = (id: any) => {
+  return http<Server.ServerResponseData>({
     method: 'POST',
     url: 'post/like',
     data: { post_id: id },
@@ -129,8 +130,8 @@ export const postLiked = (id) => {
   })
 }
 //  是否点赞
-export const postIsLike = (id) => {
-  return http({
+export const postIsLike = (id: any) => {
+  return http<Server.ServerResponseData>({
     method: 'POST',
     url: 'post/islike',
     data: { post_id: id },
@@ -138,8 +139,8 @@ export const postIsLike = (id) => {
   })
 }
 // 发表评论
-export const PostCommentsData = (option) => {
-  return http({
+export const PostCommentsData = (option: any) => {
+  return http<Server.ServerResponseData>({
     method: 'POST',
     url: 'post/cmt',
     data: option,
@@ -148,8 +149,8 @@ export const PostCommentsData = (option) => {
 }
 
 // 获取评论数据
-export const GetCommentsData = (id) => {
-  return http({
+export const GetCommentsData = (id: any) => {
+  return http<Server.ServerResponseData>({
     method: 'POST',
     url: 'post/getcmts',
     data: { post_id: id },
@@ -158,8 +159,8 @@ export const GetCommentsData = (id) => {
 }
 
 // 删除帖子
-export const deleteCard = (id) => {
-  return http({
+export const deleteCard = (id: any) => {
+  return http<Server.ServerResponseData>({
     method: 'POST',
     url: 'post/delete',
     data: { post_id: id },
@@ -170,8 +171,8 @@ export const deleteCard = (id) => {
 // ----------------------------------------爱心雨伞---------------------------------------------
 
 // 借还伞请求
-export const postUmbrella = (option) => {
-  return http({
+export const postUmbrella = (option: any) => {
+  return http<Server.ServerResponseData>({
     url: 'uma/bworrt',
     method: 'POST',
     data: option,
@@ -180,8 +181,8 @@ export const postUmbrella = (option) => {
 }
 
 // 扫码接口 --url必须使用扫码界面的地址
-export const getJsJDK = (url) => {
-  return http({
+export const getJsJDK = (url: any) => {
+  return http<Server.ServerResponseData>({
     url: 'user/getjscfg',
     method: 'POST',
     data: { url },
@@ -192,9 +193,9 @@ export const getJsJDK = (url) => {
 // ---------------------上传------------------
 
 // 上传图片
-export const uploadImgData = (base64) => {
+export const uploadImgData = (base64: any) => {
   // 返回promise对象
-  return http({
+  return http<Server.ServerResponseData>({
     url: 'upload/post/image',
     method: 'POST',
     data: {
@@ -205,12 +206,12 @@ export const uploadImgData = (base64) => {
 }
 
 // 上传表单
-export const uploadFormDataFn = (context, images) => {
+export const uploadFormDataFn = (context: any, images: any) => {
   const data = {
     context,
-    ...(images && { images })  // 存在图片就传入服务器
-  };
-  return http({
+    ...(images && { images }), // 存在图片就传入服务器
+  }
+  return http<Server.ServerResponseData>({
     method: 'POST',
     url: 'post/publish',
     data: data,
@@ -219,8 +220,8 @@ export const uploadFormDataFn = (context, images) => {
 }
 
 // 更新帖子
-export const updateFormData = (data) => {
-  return http({
+export const updateFormData = (data: any) => {
+  return http<Server.ServerResponseData>({
     method: 'POST',
     url: 'post/update',
     data: data,
@@ -229,60 +230,60 @@ export const updateFormData = (data) => {
 }
 
 // 文章获取草稿
-export const getArticleDraft = (id) => {
-  return http({
+export const getArticleDraft = (id: any) => {
+  return http<Server.ServerResponseData>({
     method: 'POST',
     url: 'arl/draft/get',
     data: { id },
-    needToken: true
+    needToken: true,
   })
 }
 // 添加/更新文章草稿
-export const updateArticleDraft = (data) => {
-  return http({
+export const updateArticleDraft = (data: any) => {
+  return http<Server.ServerResponseData>({
     method: 'POST',
     url: 'arl/draft/add',
     data: data,
-    needToken: true
+    needToken: true,
   })
 }
 
 // 删除文字草稿
 export const delArticleDraft = () => {
-  return http({
+  return http<Server.ServerResponseData>({
     method: 'POST',
     url: 'arl/draft/del',
     // data: data,
-    needToken: true
+    needToken: true,
   })
 }
 
 // 发布文章
-export const publishArticle = (data) => {
-  return http({
+export const publishArticle = (data: any) => {
+  return http<Server.ServerResponseData>({
     method: 'POST',
     url: '/arl/add',
     data: data,
-    needToken: true
+    needToken: true,
   })
 }
 class ServerAPIs {
   // 获取文章详情
-  static getArticleDetail = (id) => {
-    return http({
+  static getArticleDetail = (id: any) => {
+    return http<Server.ServerResponseData>({
       method: 'POST',
       url: '/arl/get',
       data: { id },
-      needToken: true
+      needToken: true,
     })
   }
   // 获取文章列表
-  static getArticleList = (data) => {
-    return http({
+  static getArticleList = (data: any) => {
+    return http<Server.ServerResponseData>({
       method: 'POST',
       url: '/arl/getarls',
       data: data,
-      needToken: false
+      needToken: false,
     })
   }
 }

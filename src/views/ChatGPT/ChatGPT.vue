@@ -55,11 +55,10 @@
 
 <script setup lang="ts">
 import { showToast } from 'vant'
-import { ref, reactive, nextTick, toRaw } from 'vue'
 import { formatChatTime } from '@/utils/util'
 
 import utils from '@/utils/util'
-import { getChatGPTAnswer } from '@/api/ServerApi'
+import { getChatGPTAnswer } from '@/api/ServerAPI'
 import { getLocalData } from '@/utils/util'
 let throttle = ref(false) // 节流阀
 let avatar = ref('') // 头像

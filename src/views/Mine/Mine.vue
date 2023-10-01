@@ -6,10 +6,10 @@
 </template>
 
 <script setup lang="ts">
+// 这两个不是在组件文件夹下不要删
 import UnLoginPage from '@/views/Mine/Unlogin/Unlogin.vue'
 import isLoginPage from '@/views/Mine/IsLoginPage/IsLoginPage.vue'
-import { onMounted, ref } from 'vue'
-import { isLogin } from "@/utils/util";
+import { isLogin } from '@/utils/util'
 let show = ref(false)
 
 onMounted(() => {

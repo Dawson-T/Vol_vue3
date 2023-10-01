@@ -67,7 +67,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
 import { formatChatTime } from '@/utils/util'
 import { storeToRefs } from 'pinia'
 import { useStore } from '@/stores'

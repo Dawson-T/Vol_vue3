@@ -135,10 +135,8 @@
 </template>
 
 <script setup lang="ts">
-import { uploadImgData } from '@/api/ServerApi'
-import { AddActive } from '@/api/ServerApi'
+import { uploadImgData,AddActive } from '@/api/ServerAPI'
 import { showSuccessToast, showFailToast } from 'vant'
-import { reactive, ref } from 'vue'
 let form = reactive({
   location: '',
   scope: '',
