@@ -6,7 +6,6 @@ import '@/styles/index.scss'
 import './assets/iconfont/iconfont.css'
 import App from './App.vue'
 import router from './router'
-import 'vant/lib/index.css'
 import { Lazyload } from 'vant'
 //#region unplugin-vue-components非vant官方插件解决方案不太完善，这里引入不要删，否则打包会缺少样式
 // Toast

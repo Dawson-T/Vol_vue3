@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="main">
-      <RichText
+      <EditRichText
         ref="RichTextComp"
         class="content"
         :imgSrc="imgSrc"
